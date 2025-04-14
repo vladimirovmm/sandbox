@@ -6,7 +6,7 @@
         {
             "label": "doc: generate",
             "type": "shell",
-            "command": "make generate_documentation",
+            "command": "cargo doc --target-dir ./docs/ --open",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -17,6 +17,9 @@
             "problemMatcher": [
                 "$rustc"
             ],
+            "options": {
+                "cwd": "${workspaceFolder}/sandbox_std"
+            }
         },
         {
             "label": "fix: all",
