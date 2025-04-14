@@ -1,0 +1,13 @@
+[package]
+name = "fibonacci"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dev-dependencies]
+criterion.workspace=true
+
+
+[[bench]]
+name="fibonacci"
+harness = false

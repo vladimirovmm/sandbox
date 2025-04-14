@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["fibonacci_for_1","fibonacci_for_2","fibonacci_for_3","fibonacci_for_4"],"mod":["iterator","recursion"]};

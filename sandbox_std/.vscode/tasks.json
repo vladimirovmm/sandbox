@@ -6,7 +6,7 @@
         {
             "label": "doc: generate",
             "type": "shell",
-            "command": "make generate_documentation",
+            "command": "cargo doc --target-dir ./docs/ --open",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -51,7 +51,7 @@
         {
             "label": "bench: fibonacci",
             "type": "shell",
-            "command": "cargo bench -p fibonacci",
+            "command": "cargo bench -p fibonacci -- cycle_for_v2",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -62,9 +62,6 @@
             "problemMatcher": [
                 "$rustc"
             ],
-            "options": {
-                "cwd": "${workspaceFolder}/sandbox_std"
-            }
         }
     ]
 }
