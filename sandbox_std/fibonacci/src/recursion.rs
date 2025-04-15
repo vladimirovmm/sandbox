@@ -4,7 +4,7 @@
 //! и попробуем его оптимизировать.
 //!
 //! ```no_run
-//! pub fn slow_recursion(n: u64) -> u64 {
+//! pub fn slow_recursion(n: u8) -> u64 {
 //!    match n {
 //!        0 => 1,
 //!        1 => 1,
@@ -21,8 +21,8 @@
 //! Попробуем оптимизировать ее. Для каждого вызова функции выполняется только один рекурсивный вызов.
 //!
 //! ```no_run
-//! pub fn fast_recursion(n: u64) -> u64 {
-//!    fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
+//! pub fn fast_recursion(n: u8) -> u64 {
+//!    fn rec_fn(a: u64, b: u64, limit: u8) -> u64 {
 //!        if limit == 0 {
 //!            return b;
 //!        }
@@ -44,13 +44,13 @@
 //!  - 50 - [3.7843 ns 3.7957 ns 3.8086 ns]
 //!  - 92 - [8.1819 ns 8.1912 ns 8.2015 ns]
 //!
-//! Скорость вывополнения для значения 20 увеличилась почти в 5 раз и появилась вомзожность подсчёта максимального значения.
+//! Скорость выполнения для значения 20 увеличилась почти в 5 раз и появилась возможность подсчёта максимального значения.
 //!
 //! Попробуем избавиться от создания переменной `c`.
 //!
 //! ```no_run
-//! fn recursion_v3(n: u64) -> u64 {
-//!     fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
+//! fn recursion_v3(n: u8) -> u64 {
+//!     fn rec_fn(a: u64, b: u64, limit: u8) -> u64 {
 //!         if limit == 0 {
 //!             return b;
 //!         }
@@ -74,8 +74,8 @@
 //! Можно попробовать уменьшить на один запуск функции.
 //!
 //! ```no_run
-//! pub fn recursion_v4(n: u64) -> u64 {
-//!     fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
+//! pub fn recursion_v4(n: u8) -> u64 {
+//!     fn rec_fn(a: u64, b: u64, limit: u8) -> u64 {
 //!         if limit == 1 {
 //!             return a + b;
 //!         }
@@ -106,7 +106,7 @@
 /// assert_eq!(slow_recursion(11),144);
 /// assert_eq!(slow_recursion(22),28657);
 /// ```
-pub fn slow_recursion(n: u64) -> u64 {
+pub fn slow_recursion(n: u8) -> u64 {
     match n {
         0 => 1,
         1 => 1,
@@ -123,8 +123,8 @@ pub fn slow_recursion(n: u64) -> u64 {
 /// assert_eq!(fast_recursion(11),144);
 /// assert_eq!(fast_recursion(22),28657);
 /// ```
-pub fn fast_recursion(n: u64) -> u64 {
-    fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
+pub fn fast_recursion(n: u8) -> u64 {
+    fn rec_fn(a: u64, b: u64, limit: u8) -> u64 {
         if limit == 0 {
             return b;
         }
@@ -149,8 +149,8 @@ pub fn fast_recursion(n: u64) -> u64 {
 /// assert_eq!(recursion_v3(11),144);
 /// assert_eq!(recursion_v3(22),28657);
 /// ```
-pub fn recursion_v3(n: u64) -> u64 {
-    fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
+pub fn recursion_v3(n: u8) -> u64 {
+    fn rec_fn(a: u64, b: u64, limit: u8) -> u64 {
         if limit == 0 {
             return b;
         }
@@ -175,8 +175,8 @@ pub fn recursion_v3(n: u64) -> u64 {
 /// assert_eq!(recursion_v4(22),28657);
 /// ```
 ///
-pub fn recursion_v4(n: u64) -> u64 {
-    fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
+pub fn recursion_v4(n: u8) -> u64 {
+    fn rec_fn(a: u64, b: u64, limit: u8) -> u64 {
         if limit == 1 {
             return a + b;
         }

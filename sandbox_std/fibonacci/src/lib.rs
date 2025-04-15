@@ -72,7 +72,7 @@
 //! ```no_run
 //! use fibonacci::MAX_FIBONACCI_FOR_U64;
 //!
-//! pub fn safe_fibonacci_v1(mut n: u64) -> u64 {
+//! pub fn safe_fibonacci_v1(mut n: u8) -> u64 {
 //!    if MAX_FIBONACCI_FOR_U64 < n {
 //!        return 0;
 //!    }
@@ -108,7 +108,7 @@
 //! ```no_run
 //! use fibonacci::MAX_FIBONACCI_FOR_U64;
 //!
-//! pub fn safe_fibonacci_v2(mut n: u64) -> Result<u64, u8> {
+//! pub fn safe_fibonacci_v2(mut n: u8) -> Result<u64, u8> {
 //!     if MAX_FIBONACCI_FOR_U64 < n {
 //!         return Err(0);
 //!     }
@@ -145,18 +145,17 @@
 //! use fibonacci::MAX_FIBONACCI_FOR_U64;
 //! use std::ops::SubAssign;
 //!
-//! pub fn safe_fibonacci_v3<N>(mut n: N) -> Result<u64, u8>
+//! pub fn safe_fibonacci_v3<N>(n: N) -> Result<u64, u8>
 //! where
-//!     N: PartialEq + PartialOrd + SubAssign + Copy + TryFrom<u8> + TryInto<u64>,
+//!     N: PartialEq + PartialOrd + SubAssign + Copy + TryInto<u8>,
 //! {
-//!     if MAX_FIBONACCI_FOR_U64 < n.try_into().map_err(|_| 2u8)? {
+//!     let mut n = n.try_into().map_err(|_| 1u8)?;
+//!
+//!     if MAX_FIBONACCI_FOR_U64 < n {
 //!         return Err(0);
 //!     }
 //!
-//!     let min_iter: N = 1_u8.try_into().map_err(|_| 3u8)?;
-//!     let finish_inter: N = 0_u8.try_into().map_err(|_| 4u8)?;
-//!
-//!     if n <= min_iter {
+//!     if n <= 1 {
 //!         return Ok(1);
 //!     }
 //!
@@ -164,11 +163,11 @@
 //!     let mut b: u64 = 1;
 //!
 //!     loop {
-//!         n -= min_iter;
+//!         n -= 1;
 //!         let c = a + b;
 //!         a = b;
 //!         b = c;
-//!         if n == finish_inter {
+//!         if n == 0 {
 //!             break;
 //!         }
 //!     }
@@ -188,14 +187,13 @@
 //! ```no_run
 //! use std::ops::SubAssign;
 //!
-//! pub fn safe_fibonacci_v4<N>(mut n: N) -> Result<u64, u8>
+//! pub fn safe_fibonacci_v4<N>(n: N) -> Result<u64, u8>
 //! where
-//!     N: PartialEq + PartialOrd + SubAssign + Copy + TryFrom<u8> + TryInto<u64>,
+//!     N: PartialEq + PartialOrd + SubAssign + Copy + TryInto<u8>,
 //! {
-//!     let min_iter: N = 1_u8.try_into().map_err(|_| 3u8)?;
-//!     let finish_inter: N = 0_u8.try_into().map_err(|_| 4u8)?;
-//!
-//!     if n <= min_iter {
+//!     let mut n = n.try_into().map_err(|_| 1u8)?;
+//!     
+//!     if n <= 1 {
 //!         return Ok(1);
 //!     }
 //!
@@ -203,11 +201,11 @@
 //!     let mut b: u64 = 1;
 //!
 //!     loop {
-//!         n -= min_iter;
+//!         n -= 1;
 //!         let c = a.checked_add(b).ok_or(5u8)?;
 //!         a = b;
 //!         b = c;
-//!         if n == finish_inter {
+//!         if n == 0 {
 //!             break;
 //!         }
 //!     }
@@ -228,7 +226,7 @@ pub mod cycle;
 pub mod iterator;
 pub mod recursion;
 
-pub const MAX_FIBONACCI_FOR_U64: u64 = 92;
+pub const MAX_FIBONACCI_FOR_U64: u8 = 92;
 
 /// Безопасная реализация функции для вычисления чисел Фибоначчи
 /// Защита через константу максимально допустимых количества итераций.
@@ -246,7 +244,7 @@ pub const MAX_FIBONACCI_FOR_U64: u64 = 92;
 ///
 /// **Benchmarks:**
 /// - 92 - [8.0395 ns 8.0559 ns 8.0797 ns]
-pub fn safe_fibonacci_v1(mut n: u64) -> u64 {
+pub fn safe_fibonacci_v1(mut n: u8) -> u64 {
     if MAX_FIBONACCI_FOR_U64 < n {
         return 0;
     }
@@ -287,7 +285,7 @@ pub fn safe_fibonacci_v1(mut n: u64) -> u64 {
 ///
 /// **Benchmarks:**
 /// - 92 - [8.4858 ns 8.4916 ns 8.4975 ns]
-pub fn safe_fibonacci_v2(mut n: u64) -> Result<u64, u8> {
+pub fn safe_fibonacci_v2(mut n: u8) -> Result<u64, u8> {
     if MAX_FIBONACCI_FOR_U64 < n {
         return Err(0);
     }
@@ -325,18 +323,17 @@ pub fn safe_fibonacci_v2(mut n: u64) -> Result<u64, u8> {
 ///
 /// **Benchmarks:**
 /// - 92 - [8.4963 ns 8.5032 ns 8.5105 ns]
-pub fn safe_fibonacci_v3<N>(mut n: N) -> Result<u64, u8>
+pub fn safe_fibonacci_v3<N>(n: N) -> Result<u64, u8>
 where
-    N: PartialEq + PartialOrd + SubAssign + Copy + TryFrom<u8> + TryInto<u64>,
+    N: PartialEq + PartialOrd + SubAssign + Copy + TryInto<u8>,
 {
-    if MAX_FIBONACCI_FOR_U64 < n.try_into().map_err(|_| 2u8)? {
+    let mut n: u8 = n.try_into().map_err(|_| 2u8)?;
+
+    if MAX_FIBONACCI_FOR_U64 < n {
         return Err(0);
     }
 
-    let min_iter: N = 1_u8.try_into().map_err(|_| 3u8)?;
-    let finish_inter: N = 0_u8.try_into().map_err(|_| 4u8)?;
-
-    if n <= min_iter {
+    if n <= 1 {
         return Ok(1);
     }
 
@@ -344,11 +341,11 @@ where
     let mut b: u64 = 1;
 
     loop {
-        n -= min_iter;
+        n -= 1;
         let c = a + b;
         a = b;
         b = c;
-        if n == finish_inter {
+        if n == 0 {
             break;
         }
     }
@@ -369,14 +366,13 @@ where
 ///
 /// **Benchmarks:**
 /// - 92 - [25.803 ns 26.058 ns 26.340 ns]
-pub fn safe_fibonacci_v4<N>(mut n: N) -> Result<u64, u8>
+pub fn safe_fibonacci_v4<N>(n: N) -> Result<u64, u8>
 where
-    N: PartialEq + PartialOrd + SubAssign + Copy + TryFrom<u8> + TryInto<u64>,
+    N: PartialEq + PartialOrd + SubAssign + Copy + TryInto<u8>,
 {
-    let min_iter: N = 1_u8.try_into().map_err(|_| 3u8)?;
-    let finish_inter: N = 0_u8.try_into().map_err(|_| 4u8)?;
+    let mut n: u8 = n.try_into().map_err(|_| 2u8)?;
 
-    if n <= min_iter {
+    if n <= 1 {
         return Ok(1);
     }
 
@@ -384,11 +380,11 @@ where
     let mut b: u64 = 1;
 
     loop {
-        n -= min_iter;
+        n -= 1;
         let c = a.checked_add(b).ok_or(5u8)?;
         a = b;
         b = c;
-        if n == finish_inter {
+        if n == 0 {
             break;
         }
     }
@@ -414,14 +410,15 @@ mod tests {
         10946, 17711,
     ];
 
-    fn check(f: impl Fn(u64) -> u64) {
+    fn check(f: impl Fn(u8) -> u64) {
         assert_eq!(VALID_RESULT[0], f(0));
         assert_eq!(VALID_RESULT[1], f(1));
         assert_eq!(VALID_RESULT[5], f(5));
         assert_eq!(VALID_RESULT[10], f(10));
         assert_eq!(VALID_RESULT[21], f(21));
     }
-    fn check_with_result(f: impl Fn(u64) -> Result<u64, u8>) {
+
+    fn check_with_result(f: impl Fn(u8) -> Result<u64, u8>) {
         assert_eq!(Ok(VALID_RESULT[0]), f(0));
         assert_eq!(Ok(VALID_RESULT[1]), f(1));
         assert_eq!(Ok(VALID_RESULT[5]), f(5));

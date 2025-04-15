@@ -6,7 +6,7 @@
 //! ### цикл for
 //!
 //! ```no_run
-//! pub fn fast_cycle_for(n: u64) -> u64 {
+//! pub fn fast_cycle_for(n: u8) -> u64 {
 //!     if n <= 1 {
 //!         return 1;
 //!     }
@@ -32,7 +32,7 @@
 //! ### цикл while
 //!
 //! ```no_run
-//! pub fn cycle_while(mut n: u64) -> u64 {
+//! pub fn cycle_while(mut n: u8) -> u64 {
 //!     if n <= 1 {
 //!         return 1;
 //!     }
@@ -59,7 +59,7 @@
 //! ### цикл loop
 //!
 //! ```no_run
-//! pub fn cycle_loop(mut n: u64) -> u64 {
+//! pub fn cycle_loop(mut n: u8) -> u64 {
 //!     if n <= 1 {
 //!         return 1;
 //!     }
@@ -101,7 +101,7 @@
 /// - 50 - [3.7643 ns 3.7717 ns 3.7800 ns]
 /// - 92 - [8.2994 ns 8.3083 ns 8.3168 ns]
 ///
-pub fn cycle_for_v1(n: u64) -> u64 {
+pub fn cycle_for_v1(n: u8) -> u64 {
     match n {
         0 | 1 => return 1,
         _ => (),
@@ -134,7 +134,7 @@ pub fn cycle_for_v1(n: u64) -> u64 {
 /// - 50 - [3.8084 ns 3.8139 ns 3.8197 ns]
 /// - 92 - [8.2847 ns 8.2889 ns 8.2935 ns]
 ///
-pub fn fast_cycle_for(n: u64) -> u64 {
+pub fn fast_cycle_for(n: u8) -> u64 {
     if n <= 1 {
         return 1;
     }
@@ -166,7 +166,7 @@ pub fn fast_cycle_for(n: u64) -> u64 {
 /// - 50 - [3.7269 ns 3.7333 ns 3.7400 ns]
 /// - 92 - [8.3224 ns 8.3365 ns 8.3537 ns]
 ///
-pub fn cycle_for_v3(n: u64) -> u64 {
+pub fn cycle_for_v3(n: u8) -> u64 {
     if matches!(n, 0 | 1) {
         return 1;
     }
@@ -198,7 +198,7 @@ pub fn cycle_for_v3(n: u64) -> u64 {
 /// - 50 - [4.2574 ns 4.2873 ns 4.3126 ns]
 /// - 92 - [8.2829 ns 8.2893 ns 8.2962 ns]
 ///
-pub fn cycle_for_v4(n: u64) -> u64 {
+pub fn cycle_for_v4(n: u8) -> u64 {
     match n {
         0 | 1 => return 1,
         _ => (),
@@ -232,7 +232,7 @@ pub fn cycle_for_v4(n: u64) -> u64 {
 /// - 50 - [3.7774 ns 3.7826 ns 3.7882 ns]
 /// - 92 - [8.2898 ns 8.2958 ns 8.3021 ns]
 ///
-pub fn cycle_for_v5(n: u64) -> u64 {
+pub fn cycle_for_v5(n: u8) -> u64 {
     match n {
         0 | 1 => return 1,
         _ => (),
@@ -264,7 +264,7 @@ pub fn cycle_for_v5(n: u64) -> u64 {
 /// - 50 - [3.7774 ns 3.7826 ns 3.7882 ns]
 /// - 92 - [8.2918 ns 8.2980 ns 8.3039 ns]
 ///
-pub fn cycle_for_v6(n: u64) -> u64 {
+pub fn cycle_for_v6(n: u8) -> u64 {
     if n <= 1 {
         return 1;
     }
@@ -293,7 +293,7 @@ pub fn cycle_for_v6(n: u64) -> u64 {
 /// **Benchmarks:**
 /// - 92 -  [8.1015 ns 8.1075 ns 8.1135 ns]
 ///
-pub fn cycle_while(mut n: u64) -> u64 {
+pub fn cycle_while(mut n: u8) -> u64 {
     if n <= 1 {
         return 1;
     }
@@ -325,7 +325,7 @@ pub fn cycle_while(mut n: u64) -> u64 {
 /// **Benchmarks:**
 /// - 92 -  [8.0505 ns 8.0561 ns 8.0616 ns]
 ///
-pub fn cycle_loop(mut n: u64) -> u64 {
+pub fn cycle_loop(mut n: u8) -> u64 {
     if n <= 1 {
         return 1;
     }
