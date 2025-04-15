@@ -53,6 +53,8 @@
 //! ## Итог
 //!
 //! Результат оказался неожиданным.
+//! Мои ожидания были что for будет быстрее чем рекурсия.
+//! Похоже чем примитивнее код тем быстрее будет его выполнение. А рекурсия примитивнее чем итератор.
 //!
 //! Топ по скорости выполнения:
 //! 1. `cycle_loop`
@@ -61,15 +63,338 @@
 //! 4. `fast_cycle_for`
 //! 5. `iterator_fold`
 //!
-//! Мои ожидания были что for будет быстрее чем рекурсия.
-//! Похоже чем примитивнее код тем быстрее будет его выполнение. А рекурсия примитивнее чем итератор.
+//! Остался последний момент. Сделать функцию безопаснее и избавиться от overflow.
+//! Для этого возьмем самый быстрый вариант и добавить безопасное сложение.
 //!
+//! Самым быстрым вариантом добавить ограничение на вводные данные количества итераций
+//! и если будет превышать то возвращать 0.
+//!
+//! ```no_run
+//! use fibonacci::MAX_FIBONACCI_FOR_U64;
+//!
+//! pub fn safe_fibonacci_v1(mut n: u64) -> u64 {
+//!    if MAX_FIBONACCI_FOR_U64 < n {
+//!        return 0;
+//!    }
+//!
+//!    if n <= 1 {
+//!        return 1;
+//!    }
+//!
+//!    let mut a: u64 = 0;
+//!    let mut b: u64 = 1;
+//!
+//!    loop {
+//!        n -= 1;
+//!        let c = a + b;
+//!        a = b;
+//!        b = c;
+//!        if n == 0 {
+//!            break;
+//!        }
+//!    }
+//!
+//!    b
+//! }
+//!
+//! ```
+//! **Benchmarks:**
+//! - 92 - [8.0395 ns 8.0559 ns 8.0797 ns]
+//!
+//! Но у такого решения есть огромный недостаток. Ответ 0 не очевиден
+//! и при использования этой функции возможна человеческая ошибка.
+//!
+//! Переделаем на возвращение ошибки через `Result`.
+//! ```no_run
+//! use fibonacci::MAX_FIBONACCI_FOR_U64;
+//!
+//! pub fn safe_fibonacci_v2(mut n: u64) -> Result<u64, u8> {
+//!     if MAX_FIBONACCI_FOR_U64 < n {
+//!         return Err(0);
+//!     }
+//!
+//!     if n <= 1 {
+//!         return Ok(1);
+//!     }
+//!
+//!     let mut a: u64 = 0;
+//!     let mut b: u64 = 1;
+//!
+//!     loop {
+//!         n -= 1;
+//!         let c = a + b;
+//!         a = b;
+//!         b = c;
+//!         if n == 0 {
+//!             break;
+//!         }
+//!     }
+//!
+//!     Ok(b)
+//! }
+//! ```
+//!
+//! **Benchmarks:**
+//! - 92 - [8.4858 ns 8.4916 ns 8.4975 ns]
+//!
+//! Как видим за Result нужно платить.
+//!
+//! Попробуем добавить универсальности функции. Возможность принимать любой числовой тип.
+//!
+//! ```no_run
+//! use fibonacci::MAX_FIBONACCI_FOR_U64;
+//! use std::ops::SubAssign;
+//!
+//! pub fn safe_fibonacci_v3<N>(mut n: N) -> Result<u64, u8>
+//! where
+//!     N: PartialEq + PartialOrd + SubAssign + Copy + TryFrom<u8> + TryInto<u64>,
+//! {
+//!     if MAX_FIBONACCI_FOR_U64 < n.try_into().map_err(|_| 2u8)? {
+//!         return Err(0);
+//!     }
+//!
+//!     let min_iter: N = 1_u8.try_into().map_err(|_| 3u8)?;
+//!     let finish_inter: N = 0_u8.try_into().map_err(|_| 4u8)?;
+//!
+//!     if n <= min_iter {
+//!         return Ok(1);
+//!     }
+//!
+//!     let mut a: u64 = 0;
+//!     let mut b: u64 = 1;
+//!
+//!     loop {
+//!         n -= min_iter;
+//!         let c = a + b;
+//!         a = b;
+//!         b = c;
+//!         if n == finish_inter {
+//!             break;
+//!         }
+//!     }
+//!
+//!     Ok(b)
+//! }
+//! ```
+//!
+//! **Benchmarks:**
+//! - 92 - [8.4963 ns 8.5032 ns 8.5105 ns]
+//!
+//! За конвертацию типов и дополнительные обработки ошибок нужно платить. Но показатели были измены не значительно.
+//!
+//!
+//! Можно избавиться от проверки на макимальное количество итераций, заменив на безопасное сложение.
+//!
+//! ```no_run
+//! use std::ops::SubAssign;
+//!
+//! pub fn safe_fibonacci_v4<N>(mut n: N) -> Result<u64, u8>
+//! where
+//!     N: PartialEq + PartialOrd + SubAssign + Copy + TryFrom<u8> + TryInto<u64>,
+//! {
+//!     let min_iter: N = 1_u8.try_into().map_err(|_| 3u8)?;
+//!     let finish_inter: N = 0_u8.try_into().map_err(|_| 4u8)?;
+//!
+//!     if n <= min_iter {
+//!         return Ok(1);
+//!     }
+//!
+//!     let mut a: u64 = 0;
+//!     let mut b: u64 = 1;
+//!
+//!     loop {
+//!         n -= min_iter;
+//!         let c = a.checked_add(b).ok_or(5u8)?;
+//!         a = b;
+//!         b = c;
+//!         if n == finish_inter {
+//!             break;
+//!         }
+//!     }
+//!
+//!     Ok(b)
+//! }
+//! ```
+//! **Benchmarks:**
+//! - 92 - [25.803 ns 26.058 ns 26.340 ns]
+//!
+//! Как видим это дорогая операция и её лучше применять там где результат невозможно просчитать.  
+//!
+//!
+
+use std::ops::SubAssign;
 
 pub mod cycle;
 pub mod iterator;
 pub mod recursion;
 
 pub const MAX_FIBONACCI_FOR_U64: u64 = 92;
+
+/// Безопасная реализация функции для вычисления чисел Фибоначчи
+/// Защита через константу максимально допустимых количества итераций.
+/// Если количество итераций больше максимально допустимого то вернет `0`.
+///
+/// ```rust
+/// use fibonacci::{safe_fibonacci_v1,MAX_FIBONACCI_FOR_U64};
+/// assert_eq!(safe_fibonacci_v1(0),1);
+/// assert_eq!(safe_fibonacci_v1(1),1);
+/// assert_eq!(safe_fibonacci_v1(11),144);
+/// assert_eq!(safe_fibonacci_v1(22),28657);
+/// assert_eq!(safe_fibonacci_v1(MAX_FIBONACCI_FOR_U64),12200160415121876738);
+/// assert_eq!(safe_fibonacci_v1(MAX_FIBONACCI_FOR_U64+1),0);
+/// ```
+///
+/// **Benchmarks:**
+/// - 92 - [8.0395 ns 8.0559 ns 8.0797 ns]
+pub fn safe_fibonacci_v1(mut n: u64) -> u64 {
+    if MAX_FIBONACCI_FOR_U64 < n {
+        return 0;
+    }
+
+    if n <= 1 {
+        return 1;
+    }
+
+    let mut a: u64 = 0;
+    let mut b: u64 = 1;
+
+    loop {
+        n -= 1;
+        let c = a + b;
+        a = b;
+        b = c;
+        if n == 0 {
+            break;
+        }
+    }
+
+    b
+}
+
+/// Безопасная реализация функции для вычисления чисел Фибоначчи
+/// Защита через константу максимально допустимых количества итераций.
+/// Если количество итераций больше максимально допустимого то вернет Err(0).
+///
+/// ```rust
+/// use fibonacci::{safe_fibonacci_v2,MAX_FIBONACCI_FOR_U64};
+/// assert_eq!(safe_fibonacci_v2(0),Ok(1));
+/// assert_eq!(safe_fibonacci_v2(1),Ok(1));
+/// assert_eq!(safe_fibonacci_v2(11),Ok(144));
+/// assert_eq!(safe_fibonacci_v2(22),Ok(28657));
+/// assert_eq!(safe_fibonacci_v2(MAX_FIBONACCI_FOR_U64),Ok(12200160415121876738));
+/// assert!(safe_fibonacci_v2(MAX_FIBONACCI_FOR_U64+1).is_err());
+/// ```
+///
+/// **Benchmarks:**
+/// - 92 - [8.4858 ns 8.4916 ns 8.4975 ns]
+pub fn safe_fibonacci_v2(mut n: u64) -> Result<u64, u8> {
+    if MAX_FIBONACCI_FOR_U64 < n {
+        return Err(0);
+    }
+
+    if n <= 1 {
+        return Ok(1);
+    }
+
+    let mut a: u64 = 0;
+    let mut b: u64 = 1;
+
+    loop {
+        n -= 1;
+        let c = a + b;
+        a = b;
+        b = c;
+        if n == 0 {
+            break;
+        }
+    }
+
+    Ok(b)
+}
+
+/// Безопасная реализация функции для вычисления чисел Фибоначчи
+/// ```rust
+/// use fibonacci::{safe_fibonacci_v3,MAX_FIBONACCI_FOR_U64};
+/// assert_eq!(safe_fibonacci_v3(0_i8),Ok(1));
+/// assert_eq!(safe_fibonacci_v3(1_u16),Ok(1));
+/// assert_eq!(safe_fibonacci_v3(11_i32),Ok(144));
+/// assert_eq!(safe_fibonacci_v3(22_isize),Ok(28657));
+/// assert_eq!(safe_fibonacci_v3(MAX_FIBONACCI_FOR_U64),Ok(12200160415121876738));
+/// assert!(safe_fibonacci_v3(MAX_FIBONACCI_FOR_U64+1).is_err());
+/// ```
+///
+/// **Benchmarks:**
+/// - 92 - [8.4963 ns 8.5032 ns 8.5105 ns]
+pub fn safe_fibonacci_v3<N>(mut n: N) -> Result<u64, u8>
+where
+    N: PartialEq + PartialOrd + SubAssign + Copy + TryFrom<u8> + TryInto<u64>,
+{
+    if MAX_FIBONACCI_FOR_U64 < n.try_into().map_err(|_| 2u8)? {
+        return Err(0);
+    }
+
+    let min_iter: N = 1_u8.try_into().map_err(|_| 3u8)?;
+    let finish_inter: N = 0_u8.try_into().map_err(|_| 4u8)?;
+
+    if n <= min_iter {
+        return Ok(1);
+    }
+
+    let mut a: u64 = 0;
+    let mut b: u64 = 1;
+
+    loop {
+        n -= min_iter;
+        let c = a + b;
+        a = b;
+        b = c;
+        if n == finish_inter {
+            break;
+        }
+    }
+
+    Ok(b)
+}
+
+/// Безопасная реализация функции для вычисления чисел Фибоначчи
+/// ```rust
+/// use fibonacci::{safe_fibonacci_v4,MAX_FIBONACCI_FOR_U64};
+/// assert_eq!(safe_fibonacci_v4(0_i8),Ok(1));
+/// assert_eq!(safe_fibonacci_v4(1_u16),Ok(1));
+/// assert_eq!(safe_fibonacci_v4(11_i32),Ok(144));
+/// assert_eq!(safe_fibonacci_v4(22_isize),Ok(28657));
+/// assert_eq!(safe_fibonacci_v4(MAX_FIBONACCI_FOR_U64),Ok(12200160415121876738));
+/// assert!(safe_fibonacci_v4(MAX_FIBONACCI_FOR_U64+1).is_err());
+/// ```
+///
+/// **Benchmarks:**
+/// - 92 - [25.803 ns 26.058 ns 26.340 ns]
+pub fn safe_fibonacci_v4<N>(mut n: N) -> Result<u64, u8>
+where
+    N: PartialEq + PartialOrd + SubAssign + Copy + TryFrom<u8> + TryInto<u64>,
+{
+    let min_iter: N = 1_u8.try_into().map_err(|_| 3u8)?;
+    let finish_inter: N = 0_u8.try_into().map_err(|_| 4u8)?;
+
+    if n <= min_iter {
+        return Ok(1);
+    }
+
+    let mut a: u64 = 0;
+    let mut b: u64 = 1;
+
+    loop {
+        n -= min_iter;
+        let c = a.checked_add(b).ok_or(5u8)?;
+        a = b;
+        b = c;
+        if n == finish_inter {
+            break;
+        }
+    }
+
+    Ok(b)
+}
 
 #[cfg(test)]
 mod tests {
@@ -80,6 +405,7 @@ mod tests {
         },
         iterator::iterator_fold,
         recursion::*,
+        safe_fibonacci_v1, safe_fibonacci_v2, safe_fibonacci_v3, safe_fibonacci_v4,
         MAX_FIBONACCI_FOR_U64,
     };
 
@@ -94,6 +420,14 @@ mod tests {
         assert_eq!(VALID_RESULT[5], f(5));
         assert_eq!(VALID_RESULT[10], f(10));
         assert_eq!(VALID_RESULT[21], f(21));
+    }
+    fn check_with_result(f: impl Fn(u64) -> Result<u64, u8>) {
+        assert_eq!(Ok(VALID_RESULT[0]), f(0));
+        assert_eq!(Ok(VALID_RESULT[1]), f(1));
+        assert_eq!(Ok(VALID_RESULT[5]), f(5));
+        assert_eq!(Ok(VALID_RESULT[10]), f(10));
+        assert_eq!(Ok(12200160415121876738), f(MAX_FIBONACCI_FOR_U64));
+        assert!(f(MAX_FIBONACCI_FOR_U64 + 1).is_err());
     }
 
     #[test]
@@ -112,6 +446,7 @@ mod tests {
             cycle_for_v6,
             cycle_while,
             cycle_loop,
+            safe_fibonacci_v1,
         ];
         array_with_fn.iter().for_each(check);
 
@@ -126,5 +461,33 @@ mod tests {
     #[should_panic]
     fn test_fibonacci_max() {
         cycle_for_v6(MAX_FIBONACCI_FOR_U64 + 1);
+    }
+
+    #[test]
+    fn test_safe_fibonacci_v1_max() {
+        assert_eq!(safe_fibonacci_v1(MAX_FIBONACCI_FOR_U64 + 1), 0);
+    }
+
+    #[test]
+    fn test_safe_fibonacci() {
+        [safe_fibonacci_v2, safe_fibonacci_v3, safe_fibonacci_v4]
+            .iter()
+            .for_each(check_with_result);
+    }
+
+    #[test]
+    fn test_safe_fibonacci_v3() {
+        assert_eq!(safe_fibonacci_v3(10u8), Ok(VALID_RESULT[10]));
+        assert_eq!(safe_fibonacci_v3(10u32), Ok(VALID_RESULT[10]));
+        assert_eq!(safe_fibonacci_v3(10i8), Ok(VALID_RESULT[10]));
+        assert_eq!(safe_fibonacci_v3(10isize), Ok(VALID_RESULT[10]));
+    }
+
+    #[test]
+    fn test_safe_fibonacci_v4() {
+        assert_eq!(safe_fibonacci_v4(10u8), Ok(VALID_RESULT[10]));
+        assert_eq!(safe_fibonacci_v4(10u32), Ok(VALID_RESULT[10]));
+        assert_eq!(safe_fibonacci_v4(10i8), Ok(VALID_RESULT[10]));
+        assert_eq!(safe_fibonacci_v4(10isize), Ok(VALID_RESULT[10]));
     }
 }

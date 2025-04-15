@@ -54,7 +54,7 @@
         {
             "label": "bench: fibonacci",
             "type": "shell",
-            "command": "cargo bench -p fibonacci",
+            "command": "cargo bench -p fibonacci -- safe_fibonacci_v4",
             "group": {
                 "kind": "build",
                 "isDefault": true

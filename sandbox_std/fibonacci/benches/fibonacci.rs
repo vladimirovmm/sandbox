@@ -11,6 +11,7 @@ use fibonacci::{
     },
     iterator::iterator_fold,
     recursion::*,
+    safe_fibonacci_v1, safe_fibonacci_v2, safe_fibonacci_v3, safe_fibonacci_v4,
     MAX_FIBONACCI_FOR_U64,
 };
 
@@ -102,6 +103,34 @@ pub fn criterion_benchmark(c: &mut Criterion) {
         &MAX_FIBONACCI_FOR_U64,
         |b, i| {
             b.iter(|| cycle_loop(*i));
+        },
+    );
+    group.bench_with_input(
+        format!("safe_fibonacci_v1_{MAX_FIBONACCI_FOR_U64}"),
+        &MAX_FIBONACCI_FOR_U64,
+        |b, i| {
+            b.iter(|| safe_fibonacci_v1(*i));
+        },
+    );
+    group.bench_with_input(
+        format!("safe_fibonacci_v2_{MAX_FIBONACCI_FOR_U64}"),
+        &MAX_FIBONACCI_FOR_U64,
+        |b, i| {
+            b.iter(|| safe_fibonacci_v2(*i));
+        },
+    );
+    group.bench_with_input(
+        format!("safe_fibonacci_v3_{MAX_FIBONACCI_FOR_U64}"),
+        &MAX_FIBONACCI_FOR_U64,
+        |b, i| {
+            b.iter(|| safe_fibonacci_v3(*i));
+        },
+    );
+    group.bench_with_input(
+        format!("safe_fibonacci_v4_{MAX_FIBONACCI_FOR_U64}"),
+        &MAX_FIBONACCI_FOR_U64,
+        |b, i| {
+            b.iter(|| safe_fibonacci_v4(*i));
         },
     );
     group.finish();
