@@ -1,7 +1,5 @@
 //! Цель создать интератор с рандомными числами
 //!
-//! ## rand_iter_v1
-//!
 //! Первое что приходит в голову использовать уже существующий интератор и подменить в них значения
 //!
 //! ```no_run
@@ -92,6 +90,23 @@ pub fn rand_iter_v3(range: Range<u64>) -> impl Iterator<Item = u64> {
 /// **benchmark**
 /// [413.00 ns 414.24 ns 415.39 ns]
 ///
+/// ```rust
+/// use rand_iterator::rand_iter;
+///
+/// assert!(rand_iter(0..2).next().is_some());
+/// assert_eq!(rand_iter(0..100).take(5).count(), 5);
+///
+/// for (num,value) in rand_iter(0..10).enumerate().take(5) {
+///    println!("{num}#: {value}")
+/// }
+///
+/// assert!(rand_iter(0..10).take(5).max().unwrap()<10);
+///
+/// let rand_vec: Vec<u8> = rand_iter(0..10).take(10).collect();
+/// assert_eq!(rand_vec.len(), 10);
+/// println!("random vec: {rand_vec:#?}");
+/// ```
+///
 pub fn rand_iter<N>(range: Range<N>) -> impl Iterator<Item = N>
 where
     N: SampleUniform + Clone + PartialOrd,
@@ -101,49 +116,42 @@ where
 
 #[cfg(test)]
 mod tests {
+    use std::ops::Range;
+
     use crate::{rand_iter, rand_iter_v1, rand_iter_v2, rand_iter_v3};
 
-    #[test]
-    fn test_rand_iter_v1() {
-        let count = rand_iter_v1(0, 100)
-            .take(100)
+    const INPUT_RANGE: Range<u64> = 0..100;
+    const COUNT: usize = 100;
+
+    fn check(it: impl Iterator<Item = u64>) {
+        let count = it
+            .take(COUNT)
             .enumerate()
             .inspect(|(n, value)| println!("{n}#: {value}"))
             .count();
 
-        assert_eq!(count, 100);
+        assert_eq!(count, COUNT);
+    }
+
+    #[test]
+    fn test_rand_iter_v1() {
+        let Range { start, end } = INPUT_RANGE;
+        check(rand_iter_v1(start, end));
     }
 
     #[test]
     fn test_rand_iter_v2() {
-        let count = rand_iter_v2(0, 100)
-            .take(100)
-            .enumerate()
-            .inspect(|(n, value)| println!("{n}#: {value}"))
-            .count();
-
-        assert_eq!(count, 100);
+        let Range { start, end } = INPUT_RANGE;
+        check(rand_iter_v2(start, end));
     }
 
     #[test]
-    fn test_rand_iter_v3() {
-        let count = rand_iter_v3(0..100)
-            .take(100)
-            .enumerate()
-            .inspect(|(n, value)| println!("{n}#: {value}"))
-            .count();
-
-        assert_eq!(count, 100);
+    fn test_rand_with_range() {
+        check(rand_iter_v3(INPUT_RANGE));
     }
 
     #[test]
     fn test_rand_iter() {
-        let count = rand_iter(0..100)
-            .take(100)
-            .enumerate()
-            .inspect(|(n, value)| println!("{n}#: {value}"))
-            .count();
-
-        assert_eq!(count, 100);
+        check(rand_iter(INPUT_RANGE));
     }
 }
