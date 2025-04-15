@@ -16,12 +16,12 @@
 //!
 //! **Benchmarks:**
 //!  - 20 - [12.718 µs 12.728 µs 12.740 µs]
-//!  - 50 - Обработка занимает слишком много времени
+//!  - 92 - Обработка занимает слишком много времени
 //!
 //! Попробуем оптимизировать ее. Для каждого вызова функции выполняется только один рекурсивный вызов.
 //!
 //! ```no_run
-//! pub fn recursion_v2(n: u64) -> u64 {
+//! pub fn fast_recursion(n: u64) -> u64 {
 //!    fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
 //!        if limit == 0 {
 //!            return b;
@@ -42,10 +42,11 @@
 //! **Benchmarks:**
 //!  - 20 - [2.6541 ns 2.6593 ns 2.6648 ns]
 //!  - 50 - [3.7843 ns 3.7957 ns 3.8086 ns]
+//!  - 92 - [8.1819 ns 8.1912 ns 8.2015 ns]
 //!
-//! Показатели улучились в 7 раз
+//! Скорость вывополнения для значения 20 увеличилась почти в 5 раз и появилась вомзожность подсчёта максимального значения.
 //!
-//! Можно улучшить этот результат и избавиться от создания новой переменной `c`.
+//! Попробуем избавиться от создания переменной `c`.
 //!
 //! ```no_run
 //! fn recursion_v3(n: u64) -> u64 {
@@ -68,11 +69,12 @@
 //! **Benchmarks:**
 //! - 20 - [2.6289 ns 2.6333 ns 2.6383 ns]
 //! - 50 - [3.7752 ns 3.7826 ns 3.7907 ns]
+//! - 92 - [8.2130 ns 8.2199 ns 8.2280 ns]
 //!
-//! Можно еще улучшить. Уменьшить на один запуск функции.
+//! Можно попробовать уменьшить на один запуск функции.
 //!
 //! ```no_run
-//! pub fn fast_recursion(n: u64) -> u64 {
+//! pub fn recursion_v4(n: u64) -> u64 {
 //!     fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
 //!         if limit == 1 {
 //!             return a + b;
@@ -91,8 +93,10 @@
 //! **Benchmarks:**
 //! - 20 - [2.7953 ns 2.8033 ns 2.8118 ns]
 //! - 50 - [3.7899 ns 3.7976 ns 3.8047 ns]
+//! - 92 - [8.2729 ns 8.2793 ns 8.2856 ns]
 //!
-//! Бенчмарки показывают, что `recursion_v3`` не сильно отличается от `fast_recursion`.
+//! На удивление оказалось, что такой способ показал хуже результатов чем предыдущий. Скорее всего это связано с оптимизацией компилятора.
+//! Но все результаты близки к друг другу.
 
 /// Реализация через рекурсию из примера библиотеки [criterion](https://bheisler.github.io/criterion.rs/book/getting_started.html#getting-started)
 /// ```rust
@@ -113,13 +117,13 @@ pub fn slow_recursion(n: u64) -> u64 {
 /// улучшенная версия `slow_recursion`. Для каждого вызова функции выполняется только один рекурсивный вызов.
 ///
 /// ```rust
-/// use fibonacci::recursion::recursion_v2;
-/// assert_eq!(recursion_v2(0),1);
-/// assert_eq!(recursion_v2(1),1);
-/// assert_eq!(recursion_v2(11),144);
-/// assert_eq!(recursion_v2(22),28657);
+/// use fibonacci::recursion::fast_recursion;
+/// assert_eq!(fast_recursion(0),1);
+/// assert_eq!(fast_recursion(1),1);
+/// assert_eq!(fast_recursion(11),144);
+/// assert_eq!(fast_recursion(22),28657);
 /// ```
-pub fn recursion_v2(n: u64) -> u64 {
+pub fn fast_recursion(n: u64) -> u64 {
     fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
         if limit == 0 {
             return b;
@@ -136,7 +140,7 @@ pub fn recursion_v2(n: u64) -> u64 {
     }
 }
 
-/// Отличие от recursion_v2 - избавляемся от создания переменной `c`.
+/// Отличие от fast_recursion - избавляемся от создания переменной `c`.
 ///
 /// ```rust
 /// use fibonacci::recursion::recursion_v3;
@@ -164,14 +168,14 @@ pub fn recursion_v3(n: u64) -> u64 {
 /// Отличие от recursion_v3 - уменьшаем количество запусков на 1.
 ///
 /// ```rust
-/// use fibonacci::recursion::fast_recursion;
-/// assert_eq!(fast_recursion(0),1);
-/// assert_eq!(fast_recursion(1),1);
-/// assert_eq!(fast_recursion(11),144);
-/// assert_eq!(fast_recursion(22),28657);
+/// use fibonacci::recursion::recursion_v4;
+/// assert_eq!(recursion_v4(0),1);
+/// assert_eq!(recursion_v4(1),1);
+/// assert_eq!(recursion_v4(11),144);
+/// assert_eq!(recursion_v4(22),28657);
 /// ```
 ///
-pub fn fast_recursion(n: u64) -> u64 {
+pub fn recursion_v4(n: u64) -> u64 {
     fn rec_fn(a: u64, b: u64, limit: u64) -> u64 {
         if limit == 1 {
             return a + b;

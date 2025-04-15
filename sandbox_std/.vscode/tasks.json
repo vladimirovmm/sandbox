@@ -51,7 +51,7 @@
         {
             "label": "bench: fibonacci",
             "type": "shell",
-            "command": "cargo bench -p fibonacci -- cycle_for_v2",
+            "command": "cargo bench -p fibonacci",
             "group": {
                 "kind": "build",
                 "isDefault": true
