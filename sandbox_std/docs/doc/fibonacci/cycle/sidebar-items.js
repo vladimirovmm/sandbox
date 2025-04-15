@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["cycle_for_v1","cycle_for_v2","cycle_for_v3","cycle_for_v4","cycle_for_v5","fast_cycle_for"]};
