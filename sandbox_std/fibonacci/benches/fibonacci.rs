@@ -1,6 +1,7 @@
 //! Как запустить:
+//!
 //! ```bash
-//! cargo bench --manifest-path sandbox_std/Cargo.toml -- fib_20
+//! cargo bench -p fibonacci
 //! ```
 
 use criterion::{criterion_group, criterion_main, Criterion};
