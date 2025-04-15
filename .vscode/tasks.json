@@ -52,9 +52,9 @@
             ],
         },
         {
-            "label": "bench: fibonacci",
+            "label": "bench",
             "type": "shell",
-            "command": "cargo bench -p fibonacci -- fibonacci_",
+            "command": "cargo bench -p rand_iterator",
             "group": {
                 "kind": "build",
                 "isDefault": true
