@@ -141,7 +141,7 @@ where
 mod tests {
     use std::ops::Range;
 
-    use crate::{rand_iter, rand_iter_v1, rand_iter_v2, rand_iter_v3};
+    use super::*;
 
     const INPUT_RANGE: Range<u64> = 0..100;
     const COUNT: usize = 100;
