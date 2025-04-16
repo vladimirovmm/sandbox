@@ -58,7 +58,7 @@
 use rand::distr::uniform::SampleUniform;
 use std::ops::Range;
 
-/// Недостаток этого способа это ограниченость интераций.
+/// Недостаток этого способа это ограниченность интераций.
 ///
 /// **benchmark**
 /// [410.26 ns 411.63 ns 413.29 ns]
@@ -76,7 +76,7 @@ pub fn rand_iter_v2(min: u64, max: u64) -> impl Iterator<Item = u64> {
     std::iter::repeat_with(move || rand::random_range(min..max))
 }
 
-/// Бесконечный интератор для u64 но с удобным обозначением границ через Range.
+/// Бесконечный интератор для u64, но с удобным обозначением границ через Range.
 ///
 /// **benchmark**
 /// [415.56 ns 416.14 ns 416.61 ns]
@@ -90,19 +90,42 @@ pub fn rand_iter_v3(range: Range<u64>) -> impl Iterator<Item = u64> {
 /// **benchmark**
 /// [413.00 ns 414.24 ns 415.39 ns]
 ///
+/// Пример
 /// ```rust
 /// use rand_iterator::rand_iter;
 ///
 /// assert!(rand_iter(0..2).next().is_some());
-/// assert_eq!(rand_iter(0..100).take(5).count(), 5);
+/// ```
 ///
-/// for (num,value) in rand_iter(0..10).enumerate().take(5) {
+/// тест пример на кол-во элементов
+/// ```rust
+/// use rand_iterator::rand_iter;
+///
+/// assert_eq!(rand_iter(12..212).take(5).count(), 5);
+/// ```
+///
+/// Тест пример на минимальнои и максимальное число
+/// ```rust
+/// use rand_iterator::rand_iter;
+///
+/// assert!(rand_iter(20..30).take(10).max().unwrap()<30_u8);
+/// assert!(rand_iter(20..30).take(20).min().unwrap()>=20_i8);
+/// ```
+///
+/// Пример вывода 5 элементов из созданного интератора
+/// ```rust
+/// use rand_iterator::rand_iter;
+///
+/// for (num,value) in rand_iter(0..100).enumerate().take(5) {
 ///    println!("{num}#: {value}")
 /// }
+/// ```
 ///
-/// assert!(rand_iter(0..10).take(5).max().unwrap()<10);
+/// Пример создания интератора из 10 элементов со случайными числами из диапазона от 200 до 300.
+/// ```rust
+/// use rand_iterator::rand_iter;
 ///
-/// let rand_vec: Vec<u8> = rand_iter(0..10).take(10).collect();
+/// let rand_vec: Vec<u16> = rand_iter(200..300).take(10).collect();
 /// assert_eq!(rand_vec.len(), 10);
 /// println!("random vec: {rand_vec:#?}");
 /// ```
@@ -124,34 +147,23 @@ mod tests {
     const COUNT: usize = 100;
 
     fn check(it: impl Iterator<Item = u64>) {
-        let count = it
-            .take(COUNT)
-            .enumerate()
-            .inspect(|(n, value)| println!("{n}#: {value}"))
-            .count();
+        let numbs: Vec<u64> = it.take(COUNT).collect();
 
-        assert_eq!(count, COUNT);
+        assert_eq!(numbs.len(), COUNT);
+        assert!(numbs.iter().min().unwrap() >= &INPUT_RANGE.start);
+        assert!(numbs.iter().max().unwrap() < &INPUT_RANGE.end);
     }
 
     #[test]
-    fn test_rand_iter_v1() {
+    fn test_rand() {
         let Range { start, end } = INPUT_RANGE;
         check(rand_iter_v1(start, end));
-    }
-
-    #[test]
-    fn test_rand_iter_v2() {
-        let Range { start, end } = INPUT_RANGE;
         check(rand_iter_v2(start, end));
     }
 
     #[test]
     fn test_rand_with_range() {
         check(rand_iter_v3(INPUT_RANGE));
-    }
-
-    #[test]
-    fn test_rand_iter() {
         check(rand_iter(INPUT_RANGE));
     }
 }
