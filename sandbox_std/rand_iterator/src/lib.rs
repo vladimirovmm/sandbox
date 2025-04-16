@@ -25,11 +25,17 @@
 //! # Использование через трейт
 //!
 //! ```no_run
+//! use rand_iterator::RandIterator;
 //!
+//! for value in (-128..=128).rand_iter().take(10){
+//!    println!("rand: {value}");
+//! }
 //! ```
 //!
 
 pub mod function;
 pub mod macros;
+pub mod range_trait;
 
 pub use function::rand_iter;
+pub use range_trait::RandIterator;

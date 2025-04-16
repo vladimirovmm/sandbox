@@ -57,6 +57,8 @@
 
 use std::ops::Range;
 
+use rand::distr::uniform::SampleRange;
+
 /// Недостаток этого способа это ограниченность интераций.
 ///
 /// **benchmark**
@@ -124,14 +126,15 @@ pub fn rand_iter_v3(range: Range<u64>) -> impl Iterator<Item = u64> {
 /// ```rust
 /// use rand_iterator::rand_iter;
 ///
-/// let rand_vec: Vec<u16> = rand_iter(200..300).take(10).collect();
+/// let rand_vec: Vec<u16> = rand_iter(200..=300).take(10).collect();
 /// assert_eq!(rand_vec.len(), 10);
 /// println!("random vec: {rand_vec:#?}");
 /// ```
 ///
-pub fn rand_iter<N>(range: Range<N>) -> impl Iterator<Item = N>
+pub fn rand_iter<N, R>(range: R) -> impl Iterator<Item = N>
 where
     N: rand::distr::uniform::SampleUniform + Clone + PartialOrd,
+    R: SampleRange<N> + Clone,
 {
     std::iter::repeat_with(move || rand::random_range(range.clone()))
 }
