@@ -1,4 +1,4 @@
-//! Цель создать интератор с рандомными числами
+//! Цель создать функцию возвращающая интератор с рандомными числами
 //!
 //! Первое что приходит в голову использовать уже существующий интератор и подменить в них значения
 //!
@@ -55,7 +55,6 @@
 //! [413.00 ns 414.24 ns 415.39 ns]
 //!
 
-use rand::distr::uniform::SampleUniform;
 use std::ops::Range;
 
 /// Недостаток этого способа это ограниченность интераций.
@@ -113,10 +112,10 @@ pub fn rand_iter_v3(range: Range<u64>) -> impl Iterator<Item = u64> {
 /// ```
 ///
 /// Пример вывода 5 элементов из созданного интератора
-/// ```rust
+/// ```no_run
 /// use rand_iterator::rand_iter;
 ///
-/// for (num,value) in rand_iter(0..100).enumerate().take(5) {
+/// for (num,value) in rand_iter(-1_000_000..100).enumerate().take(5) {
 ///    println!("{num}#: {value}")
 /// }
 /// ```
@@ -132,7 +131,7 @@ pub fn rand_iter_v3(range: Range<u64>) -> impl Iterator<Item = u64> {
 ///
 pub fn rand_iter<N>(range: Range<N>) -> impl Iterator<Item = N>
 where
-    N: SampleUniform + Clone + PartialOrd,
+    N: rand::distr::uniform::SampleUniform + Clone + PartialOrd,
 {
     std::iter::repeat_with(move || rand::random_range(range.clone()))
 }
