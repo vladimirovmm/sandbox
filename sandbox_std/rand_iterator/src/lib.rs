@@ -1,6 +1,6 @@
 //! Цель создать бесконечный интератор с рандомными числами
 //!
-//! # Использование функций
+//! # Использование через функцию
 //!
 //! ```no_run
 //! use rand_iterator::rand_iter;
@@ -10,13 +10,26 @@
 //! }
 //! ```
 //!
-//! # Макрос
+//! # Использование через макрос
 //!
-//! @todo
+//! ```no_run
+//! use rand_iterator::rand;
 //!
+//! for (num,value) in rand!(-128..128, 50).enumerate() {
+//!     println!("{num}#: {value}")
+//! }
+//!
+//! rand!().take(50).enumerate().for_each(|(num,value)| println!("{num}#: {value}"));
+//! ```
+//!
+//! # Использование через трейт
+//!
+//! ```no_run
+//!
+//! ```
 //!
 
-pub mod func;
-pub mod macr;
+pub mod function;
+pub mod macros;
 
-pub use func::rand_iter;
+pub use function::rand_iter;

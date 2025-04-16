@@ -6,7 +6,7 @@
 use std::ops::Range;
 
 use criterion::{criterion_group, criterion_main, Criterion};
-use rand_iterator::{func::*, rand_iter};
+use rand_iterator::{function::*, rand_iter};
 
 pub fn criterion_benchmark(c: &mut Criterion) {
     let mut group = c.benchmark_group("rand_iterator");
