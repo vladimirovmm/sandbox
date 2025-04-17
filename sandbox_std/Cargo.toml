@@ -2,7 +2,7 @@
 [workspace]
 resolver = "2"
 
-members = ["fibonacci", "rand_iterator"]
+members = [ "exp_std","fibonacci", "rand_iterator"]
 
 [workspace.package]
 edition = "2021"
