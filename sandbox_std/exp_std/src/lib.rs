@@ -2,4 +2,5 @@
 //!
 
 pub mod convert_to_array_bits;
+pub mod exp_any;
 pub mod primitive_types;
