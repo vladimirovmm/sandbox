@@ -1,3 +1,4 @@
+pub mod arr;
 pub mod ch;
 pub mod exp_str;
 pub mod num;
