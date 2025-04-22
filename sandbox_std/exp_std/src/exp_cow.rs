@@ -28,4 +28,23 @@ fn test() {
     assert_eq!(c, "hi!!");
     assert_eq!(b, "hi!!");
     // assert_eq!(c, "hi!!");// panic
+
+    fn lower(s: &str) -> Cow<str> {
+        if s.chars().any(char::is_uppercase) {
+            Cow::Owned(s.to_lowercase())
+        } else {
+            Cow::Borrowed(s)
+        }
+    }
+    let a = "hi";
+    let b = lower(a);
+    assert_eq!(b, "hi");
+    assert_eq!(b.as_ptr(), a.as_ptr()); // Указатель на один и теже данные
+    println!("a={a}; b={b}");
+
+    let a = "Hi";
+    let b = lower(a);
+    assert_eq!(b, "hi");
+    assert_ne!(b.as_ptr(), a.as_ptr()); // Указатель на разные данные
+    println!("a={a}; b={b}");
 }
