@@ -31,9 +31,11 @@ pub fn longest_palindrome(s: String) -> String {
     let s: Vec<char> = s.chars().collect();
     let len = s.len();
     let mut result = "".to_string();
-    for cn in 0..len {
+    let c = len / 2 + 1;
+
+    for cn in (0..c).rev().flat_map(|v| [v, len - v]).filter(|v| v < &len) {
         if let Some(r) = fpalindrome(&s, cn) {
-            if r.len() > result.len() {
+            if r.len() >= result.len() {
                 result = r;
             }
         }
@@ -47,6 +49,7 @@ pub fn longest_palindrome(s: String) -> String {
 #[test]
 fn test_longest_palindrome() {
     assert_eq!(longest_palindrome("a".to_string()), "a".to_string());
+    assert_eq!(longest_palindrome("eabcb".to_string()), "bcb".to_string());
     assert_eq!(longest_palindrome("babad".to_string()), "bab".to_string());
     assert_eq!(longest_palindrome("cbbd".to_string()), "bb".to_string());
     assert_eq!(
