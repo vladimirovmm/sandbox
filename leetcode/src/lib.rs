@@ -3,3 +3,4 @@ pub mod longest_substrings;
 pub mod median_two_arrays;
 pub mod palindromic_substring;
 pub mod two_sum;
+pub mod zigzag;
