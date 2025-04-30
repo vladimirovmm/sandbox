@@ -3,5 +3,6 @@ pub mod longest_substrings;
 pub mod median_two_arrays;
 pub mod palindromic_substring;
 pub mod reverse_int;
+pub mod string_to_int;
 pub mod two_sum;
 pub mod zigzag;
