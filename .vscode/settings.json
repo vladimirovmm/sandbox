@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
-        "Леонардо"
+        "nums",
+        "WOMENS"
     ],
     "rust-analyzer.runnables.extraEnv": {
         "RUST_LOG": "debug",
@@ -10,4 +11,5 @@
         "--show-output",
         "--nocapture"
     ],
+    "rust-analyzer.procMacro.enable": true,
 }

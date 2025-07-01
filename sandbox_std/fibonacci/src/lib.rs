@@ -395,6 +395,7 @@ where
 #[cfg(test)]
 mod tests {
     use crate::{
+        MAX_FIBONACCI_FOR_U64,
         cycle::{
             cycle_for_v1, cycle_for_v3, cycle_for_v4, cycle_for_v5, cycle_for_v6, cycle_loop,
             cycle_while, fast_cycle_for,
@@ -402,7 +403,6 @@ mod tests {
         iterator::iterator_fold,
         recursion::*,
         safe_fibonacci_v1, safe_fibonacci_v2, safe_fibonacci_v3, safe_fibonacci_v4,
-        MAX_FIBONACCI_FOR_U64,
     };
 
     const VALID_RESULT: [u64; 22] = [

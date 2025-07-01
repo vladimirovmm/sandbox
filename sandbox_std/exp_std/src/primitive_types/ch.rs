@@ -121,7 +121,7 @@ fn test_match() {
     let (sl1, sl2) = s.split_first_chunk::<5>().unwrap();
     assert_eq!(sl1, b"hello");
     assert_eq!(sl2, b" world");
-    println!("Split: {:?} {:?}", sl1, sl2);
+    println!("Split: {sl1:?} {sl2:?}");
 
     let (sl1, sl2) = s.split_last_chunk::<5>().unwrap();
     assert_eq!(sl1, b"hello ");

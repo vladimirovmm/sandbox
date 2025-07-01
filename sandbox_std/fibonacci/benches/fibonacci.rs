@@ -4,8 +4,9 @@
 //! cargo bench -p fibonacci
 //! ```
 
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use fibonacci::{
+    MAX_FIBONACCI_FOR_U64,
     cycle::{
         cycle_for_v1, cycle_for_v3, cycle_for_v4, cycle_for_v5, cycle_for_v6, cycle_loop,
         cycle_while, fast_cycle_for,
@@ -13,7 +14,6 @@ use fibonacci::{
     iterator::iterator_fold,
     recursion::*,
     safe_fibonacci_v1, safe_fibonacci_v2, safe_fibonacci_v3, safe_fibonacci_v4,
-    MAX_FIBONACCI_FOR_U64,
 };
 
 pub fn criterion_benchmark(c: &mut Criterion) {

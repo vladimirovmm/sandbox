@@ -358,7 +358,7 @@ fn test_checked_add() {
         println!("{result} + {v} = {r}");
         (max_iter, result) = (v, r);
     }
-    println!("Max iter = {}", max_iter);
+    println!("Max iter = {max_iter}");
 
     assert_eq!(i8::MAX.checked_add(-3), Some(i8::MAX - 3));
 
