@@ -1,4 +1,5 @@
 pub mod add_two_numbers;
+pub mod integer_to_roman;
 pub mod longest_substrings;
 pub mod median_two_arrays;
 pub mod palindrome_number;
