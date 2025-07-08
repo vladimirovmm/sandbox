@@ -5,6 +5,7 @@ pub mod palindrome_number;
 pub mod palindromic_substring;
 pub mod regular_expr;
 pub mod reverse_int;
+pub mod roman_to_int;
 pub mod string_to_int;
 pub mod two_sum;
 pub mod zigzag;
