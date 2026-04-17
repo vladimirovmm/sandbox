@@ -14,12 +14,12 @@
 // Rc<T>
 // Arc<T>
 
-mod TestCell {
-    // Cell<T> Обычно используется для более простых типов,
-    //  где копирование или перемещение значений не требует больших ресурсов (например, для чисел),
-    //  и по возможности его следует предпочитать другим типам ячеек.
-    // Для более крупных типов, не поддерживающих копирование, RefCell предоставляет некоторые преимущества.
-}
+// mod TestCell {
+//     // Cell<T> Обычно используется для более простых типов,
+//     //  где копирование или перемещение значений не требует больших ресурсов (например, для чисел),
+//     //  и по возможности его следует предпочитать другим типам ячеек.
+//     // Для более крупных типов, не поддерживающих копирование, RefCell предоставляет некоторые преимущества.
+// }
 
 mod test_rc {
     // Rc<T> (Reference Counted): Умный указатель для подсчёта ссылок,
@@ -120,7 +120,7 @@ mod test_rc {
     }
 }
 
-mod TestRefCell {
+mod test_ref_cell {
     // RefCell<T> использует время жизни объектов в Rust для реализации «динамического заимствования» — процесса,
     // при котором можно получить временный, исключительный, изменяемый доступ к внутреннему значению.
     // Заимствования для RefCell<T> отслеживаются во время выполнения, в отличие от собственных ссылочных
@@ -207,7 +207,7 @@ mod TestRefCell {
         Female,
     }
 
-    struct MarriedСouple<'a> {
+    struct MarriedCouple<'a> {
         husband: RMPerson<'a>,
         wife: RMPerson<'a>,
     }
@@ -216,7 +216,7 @@ mod TestRefCell {
         name: &'a str,
         gender: Gender,
         age: NaiveDate,
-        parents: Option<Rc<MarriedСouple<'a>>>,
+        parents: Option<Rc<MarriedCouple<'a>>>,
         spouse: Option<RMPerson<'a>>,
         children: Rc<Vec<RMPerson<'a>>>,
     }
@@ -274,7 +274,7 @@ mod TestRefCell {
         }
     }
 
-    fn crate_parents(child: RMPerson) -> Rc<MarriedСouple> {
+    fn crate_parents(child: RMPerson) -> Rc<MarriedCouple> {
         // Рождение ребёнка
         let child_date = child.borrow().age;
 
@@ -305,7 +305,7 @@ mod TestRefCell {
         }));
         wife.borrow_mut().spouse = Some(husband.clone());
 
-        let married_couple = Rc::new(MarriedСouple {
+        let married_couple = Rc::new(MarriedCouple {
             husband: husband.clone(),
             wife: wife.clone(),
         });
@@ -382,5 +382,44 @@ mod TestRefCell {
         }
 
         println!("{}", first.borrow());
+    }
+
+    #[test]
+    fn test_metdhods() {
+        let a = RefCell::new(1);
+
+        // let b = a.into_inner();
+        // assert_eq!(1, *a.borrow()); // !panic
+        assert_eq!(1, *a.borrow());
+        let old = a.replace(2);
+        assert_eq!(1, old);
+        assert_eq!(2, *a.borrow());
+        {
+            let _b = a.borrow();
+            // a.replace(3); // !panic
+        }
+
+        let old = a.replace_with(|v| *v + 1);
+        assert_eq!(2, old);
+        assert_eq!(3, *a.borrow());
+
+        let b = RefCell::new(4);
+        a.swap(&b);
+        assert_eq!(3, *b.borrow());
+        assert_eq!(4, *a.borrow());
+        *a.borrow_mut() += 1;
+        *b.borrow_mut() += 1;
+        assert_eq!(4, *b.borrow());
+        assert_eq!(5, *a.borrow());
+
+        {
+            let mut r = a.borrow_mut();
+            *r += 1;
+            let _b = RefCell::new(1);
+            // a.swap(&_b); // panic
+
+            assert!(a.try_borrow().is_err());
+            assert!(a.try_borrow_mut().is_err());
+        }
     }
 }
