@@ -1,73 +1,82 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "doc: generate",
-            "type": "shell",
-            "command": "cargo doc --target-dir ./docs/ --open",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "clear": true
-            },
-            "problemMatcher": [
-                "$rustc"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/sandbox_std"
-            }
-        },
-        {
-            "label": "fix: all",
-            "type": "shell",
-            "command": "make fix",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "clear": true
-            },
-            "problemMatcher": [
-                "$rustc"
-            ],
-        },
-        {
-            "label": "check: all",
-            "type": "shell",
-            "command": "make check",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "clear": true
-            },
-            "problemMatcher": [
-                "$rustc"
-            ],
-        },
-        {
-            "label": "bench",
-            "type": "shell",
-            "command": "cargo bench -p rand_iterator",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "clear": true
-            },
-            "problemMatcher": [
-                "$rustc"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/sandbox_std"
-            }
-        }
-    ]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "doc: generate",
+      "type": "shell",
+      "command": "cargo doc --target-dir ./docs/ --open",
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      },
+      "presentation": {
+        "clear": true,
+      },
+      "problemMatcher": ["$rustc"],
+      "options": {
+        "cwd": "${workspaceFolder}/sandbox_std",
+      },
+    },
+    {
+      "label": "fix: all",
+      "type": "shell",
+      "command": "make fix",
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      },
+      "presentation": {
+        "clear": true,
+      },
+      "problemMatcher": ["$rustc"],
+    },
+    {
+      "label": "check: all",
+      "type": "shell",
+      "command": "make check",
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      },
+      "presentation": {
+        "clear": true,
+      },
+      "problemMatcher": ["$rustc"],
+    },
+
+    {
+      "label": "exp_sort: fix",
+      "type": "shell",
+      "command": "cargo fix --allow-dirty --allow-staged || exit 1; cargo clippy --fix --no-deps --allow-dirty --allow-staged || exit 2; cargo +nightly fmt $path",
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      },
+      "presentation": {
+        "clear": true,
+      },
+      "problemMatcher": ["$rustc"],
+      "options": {
+        "cwd": "${workspaceFolder}/sandbox_std",
+      },
+    },
+    {
+      "label": "exp_sort: bench",
+      "type": "shell",
+      "command": "cargo bench -p exp_sort",
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      },
+      "presentation": {
+        "clear": true,
+      },
+      "problemMatcher": ["$rustc"],
+      "options": {
+        "cwd": "${workspaceFolder}/sandbox_std",
+      },
+    },
+  ],
 }

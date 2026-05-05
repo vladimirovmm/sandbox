@@ -1,0 +1,17 @@
+[package]
+name = "exp_sort"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+
+[dev-dependencies]
+criterion = "0.8.0"
+
+[[bench]]
+name = "benchmark_sort"
+harness = false
+
+[lints]
+workspace = true
