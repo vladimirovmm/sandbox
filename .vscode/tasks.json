@@ -19,35 +19,9 @@
         "cwd": "${workspaceFolder}/sandbox_std",
       },
     },
-    {
-      "label": "fix: all",
-      "type": "shell",
-      "command": "make fix",
-      "group": {
-        "kind": "build",
-        "isDefault": true,
-      },
-      "presentation": {
-        "clear": true,
-      },
-      "problemMatcher": ["$rustc"],
-    },
-    {
-      "label": "check: all",
-      "type": "shell",
-      "command": "make check",
-      "group": {
-        "kind": "build",
-        "isDefault": true,
-      },
-      "presentation": {
-        "clear": true,
-      },
-      "problemMatcher": ["$rustc"],
-    },
 
     {
-      "label": "exp_sort: fix",
+      "label": "sandbox_std: fix",
       "type": "shell",
       "command": "cargo fix --allow-dirty --allow-staged || exit 1; cargo clippy --fix --no-deps --allow-dirty --allow-staged || exit 2; cargo +nightly fmt $path",
       "group": {
@@ -63,9 +37,9 @@
       },
     },
     {
-      "label": "exp_sort: bench",
+      "label": "exp_search: bench",
       "type": "shell",
-      "command": "cargo bench -p exp_sort",
+      "command": "cargo bench -p exp_search",
       "group": {
         "kind": "build",
         "isDefault": true,

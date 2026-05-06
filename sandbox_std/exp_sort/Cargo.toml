@@ -7,7 +7,7 @@ version.workspace = true
 [dependencies]
 
 [dev-dependencies]
-criterion = "0.8.0"
+criterion.workspace = true
 
 [[bench]]
 name = "benchmark_sort"
