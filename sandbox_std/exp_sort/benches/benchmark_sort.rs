@@ -1,7 +1,7 @@
 use std::hint::black_box;
 
 use criterion::{Criterion, criterion_group, criterion_main};
-use exp_sort::{bubble_sort, insertion_sort, merge_sort, quick_sort, selection_sort};
+use exp_sort::{bubble_sort, heap_sort, insertion_sort, merge_sort, quick_sort, selection_sort};
 
 /// Малый массив для тестирования сортировки
 const SMALL_ARR: [i32; 5] = [5, 2, 8, 1, 9];
@@ -81,6 +81,19 @@ fn benchmark_sort(cri: &mut Criterion) {
         b.iter(|| {
             let mut arr = BIG_ARR.clone();
             merge_sort(black_box(&mut arr));
+        })
+    });
+
+    cri.bench_function("heap_small", |b| {
+        b.iter(|| {
+            let mut arr = SMALL_ARR.clone();
+            heap_sort(black_box(&mut arr));
+        })
+    });
+    cri.bench_function("heap_large", |b| {
+        b.iter(|| {
+            let mut arr = BIG_ARR.clone();
+            heap_sort(black_box(&mut arr));
         })
     });
 

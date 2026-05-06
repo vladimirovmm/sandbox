@@ -284,3 +284,75 @@ pub fn merge_sort<T: Ord + Copy + Debug>(arr: &mut [T]) {
 
     arr.copy_from_slice(&merge);
 }
+
+/// Пирамидальная сортировка (Heap Sort) — алгоритм сортировки на основе двоичной кучи.
+/// Сначала строится макс-куча, затем элементы извлекаются по одному и переносятся в конец массива.
+/// Общая сложность: O(n log n).
+///
+/// # Примеры
+///
+/// ```
+/// use exp_sort::heap_sort;
+///
+/// let mut arr = [2, 3, 1];
+/// heap_sort(&mut arr);
+/// assert_eq!(arr, [1, 2 ,3]);
+/// ```
+///
+/// ```
+/// use exp_sort::heap_sort;
+///
+/// let mut arr = [5, 2, 8, 1, 9];
+/// heap_sort(&mut arr);
+/// assert_eq!(arr, [1, 2, 5, 8, 9]);
+/// ```
+///
+/// ```
+/// use exp_sort::heap_sort;
+///
+/// let mut arr = [10, 4, 7, 3, 1, 8, 2, 9, 5, 6, 15, 12, 18, 11, 14, 17, 13, 16, 19, 1];
+/// heap_sort(&mut arr);
+/// assert_eq!(arr, [1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
+/// ```
+///
+/// small - time:   [10.477 ns 10.494 ns 10.513 ns]
+/// big - time:   [9.6989 µs 9.7217 µs 9.7452 µs]
+///
+pub fn heap_sort<T: Ord + Copy + Debug>(arr: &mut [T]) {
+    let len = arr.len();
+    if len <= 1 {
+        return;
+    }
+
+    // 1. Строим максимальную кучу (max-heap)
+    for i in (0..len / 2).rev() {
+        heapify(arr, len, i);
+    }
+
+    // 2. Извлекаем элементы из кучи по одному
+    for i in (1..len).rev() {
+        arr.swap(0, i); // Перемещаем текущий корень в конец
+        heapify(arr, i, 0); // Восстанавливаем свойство кучи
+    }
+}
+
+fn heapify<T: Ord + Debug>(arr: &mut [T], heap_size: usize, root: usize) {
+    let mut largest = root;
+    let left = 2 * root + 1;
+    let right = 2 * root + 2;
+
+    // Находим наибольший элемент среди корня и его потомков
+    if left < heap_size && arr[left] > arr[largest] {
+        largest = left;
+    }
+    if right < heap_size && arr[right] > arr[largest] {
+        largest = right;
+    }
+
+    // Если наибольший элемент не корень, меняем их местами
+    if largest != root {
+        arr.swap(root, largest);
+        // Рекурсивно восстанавливаем свойство кучи для поддерева
+        heapify(arr, heap_size, largest);
+    }
+}
