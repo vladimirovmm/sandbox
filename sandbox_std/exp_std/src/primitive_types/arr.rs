@@ -10,7 +10,7 @@ fn test_array() {
     assert_eq!(arr2, [false, true, false, true, false]);
 
     let mut arr = [1, 2, 3, 4, 5];
-    arr.each_mut().map(|t| {
+    let _ = arr.each_mut().map(|t| {
         if *t % 2 == 0 {
             *t *= *t
         }

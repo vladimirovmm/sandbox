@@ -28,13 +28,13 @@ type CityMap = Vec<(String, Vec<(usize, usize)>)>;
 /// от начального города (указывается индексом) до конечного города (указывается индексом).
 /// Возвращает вектор индексов городов, составляющих кратчайший путь.
 pub fn dijkstra(cities: &CityMap, start_idx: usize, end: usize) -> Vec<usize> {
-    let n = cities.len();
-    let mut dist: Vec<usize> = vec![usize::MAX; n];
-    let mut prev: Vec<Option<usize>> = vec![None; n]; // для восстановления пути
-    let mut visited = vec![false; n];
-    let mut heap = BinaryHeap::new();
+    let num_cities = cities.len();
+    let mut dist: Vec<usize> = vec![usize::MAX; num_cities]; // для хранения кратчайших расстояний. Индекс города - индекс в векторе расстояния
+    let mut prev: Vec<Option<usize>> = vec![None; num_cities]; // для восстановления пути
+    let mut visited = vec![false; num_cities]; // для отслеживания посещенных городов (вершин)
+    let mut heap = BinaryHeap::new(); // для реализации очереди с приоритетом
 
-    // Инициализация: расстояние от начальной вершины до самой себя = 0
+    // Инициализация: расстояние от начальной вершины до самой себя = 0.
     dist[start_idx] = 0;
     heap.push(Reverse((0, start_idx)));
 
@@ -43,7 +43,7 @@ pub fn dijkstra(cities: &CityMap, start_idx: usize, end: usize) -> Vec<usize> {
         if visited[heap_city] {
             continue;
         }
-        visited[heap_city] = true;
+        visited[heap_city] = true; // помечаем город как посещённый
 
         // Если достигли конечной точки — можно завершать
         if heap_city == end {
@@ -53,6 +53,10 @@ pub fn dijkstra(cities: &CityMap, start_idx: usize, end: usize) -> Vec<usize> {
         // Обход соседей текущей вершины
         for &(city_index, weight) in &cities[heap_city].1 {
             let new_dist = heap_weight + weight;
+            println!(
+                "{}->{}: {new_dist}",
+                &cities[heap_city].0, &cities[city_index].0
+            );
             // Обновляем расстояние, если найден более короткий путь до этого города
             if new_dist < dist[city_index] {
                 dist[city_index] = new_dist; // Обновляем расстояние от стартовой города до промежуточного, если нашли более короткий путь

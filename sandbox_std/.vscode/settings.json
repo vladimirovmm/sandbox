@@ -1,13 +1,10 @@
 {
-    "cSpell.words": [
-        "Леонардо"
-    ],
-    "rust-analyzer.runnables.extraEnv": {
-        "RUST_LOG": "debug",
-        "RUST_BACKTRACE": 0
-    },
-    "rust-analyzer.runnables.extraTestBinaryArgs": [
-        "--show-output",
-        "--nocapture"
-    ],
+  "rust-analyzer.runnables.extraEnv": {
+    "RUST_LOG": "debug",
+    "RUST_BACKTRACE": 0,
+  },
+  "rust-analyzer.runnables.extraTestBinaryArgs": [
+    "--show-output",
+    "--nocapture",
+  ],
 }

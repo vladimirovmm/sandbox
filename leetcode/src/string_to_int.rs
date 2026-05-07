@@ -9,12 +9,13 @@
 //!
 //! Ссылка на задачу: https://leetcode.com/problems/string-to-integer-atoi/
 //!
+
 #![cfg(test)]
 
 pub fn my_atoi(s: String) -> i32 {
     let mut result: i32 = 0;
     let mut neg = false;
-    let mut overwlow = false;
+    let mut overflow = false;
 
     for (p, ch) in s
         .chars()
@@ -38,7 +39,7 @@ pub fn my_atoi(s: String) -> i32 {
         result = if let Some(v) = result.checked_mul(10).and_then(|v| v.checked_add(num)) {
             v
         } else {
-            overwlow = true;
+            overflow = true;
             break;
         };
     }
@@ -47,11 +48,11 @@ pub fn my_atoi(s: String) -> i32 {
         if let Some(v) = result.checked_neg() {
             result = v;
         } else {
-            overwlow = true;
+            overflow = true;
         }
     }
 
-    if overwlow {
+    if overflow {
         if neg { i32::MIN } else { i32::MAX }
     } else {
         result

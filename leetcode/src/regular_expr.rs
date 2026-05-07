@@ -103,7 +103,7 @@ fn match_pattern(s: &str, pattern: &[(&str, bool)]) -> bool {
         }
     }
 
-    // Множественный слева
+    // Множественный справа
     if l_pattern.1 {
         let Some(need_char) = l_pattern.0.chars().next() else {
             return false;

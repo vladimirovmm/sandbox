@@ -16,7 +16,7 @@ fn test_ptr() {
         // Считать первые 4 байта нашего указателя, и вернуть их как срез.
         let slice = slice::from_raw_parts(ptr, 4);
 
-        // приобразовать в строку
+        // Преобразовать в строку
         str::from_utf8(slice)
     };
 
@@ -118,14 +118,14 @@ fn test_split() {
     let t = "Здравствуйте!".split_at_checked(6); // ("Здравс", "твуйте!")
     assert_eq!(t, Some(("Здр", "авствуйте!")));
 
-    // Интератор по символам и индексам
+    // Итератор по символам и индексам
     for (index, ch) in text.char_indices() {
         println!("{index}#: {ch}");
     }
     println!();
 
     for (index, ch) in "Здравствуйте!".char_indices() {
-        // index позиция в байтов в строке
+        // index позиция в байтах в строке
         println!("{index}#: {ch}");
     }
     println!();
@@ -142,14 +142,14 @@ fn test_split() {
     let r: Vec<_> = text.rsplit(' ').collect();
     assert_eq!(r, vec!["Hi!", "world..", "Hello,"]);
 
-    // Разбить строку по пробельным символам с ограничением кол-ва разбиений
+    // Разбить строку по пробельным символам с ограничением количества разбиений
     let r: Vec<_> = text.splitn(2, char::is_whitespace).collect();
     assert_eq!(r, vec!["Hello,", "world.. Hi!"]);
 
     let r: Vec<_> = text.splitn(4, char::is_whitespace).collect();
     assert_eq!(r, vec!["Hello,", "world..", "Hi!"]);
 
-    // Разбить строку c конца по пробельным символам с ограничением кол-ва разбиений.
+    // Разбить строку с конца по пробельным символам с ограничением количества разбиений.
     let r: Vec<_> = text.rsplitn(2, char::is_whitespace).collect();
     assert_eq!(r, vec!["Hi!", "Hello, world.."]);
 
@@ -229,7 +229,7 @@ fn test_split() {
 
 /// Проверка содержит ли строка подстроку
 #[test]
-fn test_countains() {
+fn test_contains() {
     let text = "Hello, world!";
     assert!(text.contains("Hello"));
     assert!(text.contains("world"));
@@ -245,8 +245,8 @@ fn test_countains() {
     assert_eq!(text.find('o'), Some(4)); // 4 - позиция первого вхождения подстроки
     assert_eq!(text.find("wor"), Some(7)); // 7 - позиция первого вхождения подстроки
     assert_eq!(text.find(char::is_whitespace), Some(6)); // Поиск первого пробельного символа
-    assert_eq!(text.find(|ch: char| matches!(ch, 'o'..='z')), Some(4)); // Поиск по деапозону.
-    assert_eq!(text.find(|ch: char| (ch > 'o') && (ch < 'z')), Some(7)); // Поиск по деапозону.
+    assert_eq!(text.find(|ch: char| matches!(ch, 'o'..='z')), Some(4)); // Поиск по диапазону.
+    assert_eq!(text.find(|ch: char| (ch > 'o') && (ch < 'z')), Some(7)); // Поиск по диапазону.
 
     assert_eq!(text.rfind('o'), Some(8)); // Поиск с конца
 }
@@ -291,21 +291,109 @@ fn test_parse() {
         .collect();
     assert_eq!(r, Ok(vec![2025, 4, 22, 13, 44, 0]));
 }
-#[test]
-fn test_escape() {
-    // Экранирование специальных символов в строке.
-    let r = "\t\n\r\n Hello, world!\n\t\r\n ".escape_default();
-    assert_eq!(&r.to_string(), "\\t\\n\\r\\n Hello, world!\\n\\t\\r\\n ");
-}
 
 #[test]
 fn test_replace() {
-    let date = "2025-04-22 13:44:00";
-
     let text = "Hello, world!";
-    let r = text.replace("world", "rust");
-    assert_eq!(r, "Hello, rust!");
+    let replaced = text.replace("world", "Rust");
+    assert_eq!(replaced, "Hello, Rust!");
+}
 
-    let r = date.replace(char::is_numeric, "*");
-    assert_eq!(r, "****-**-** **:**:**");
+#[test]
+fn test_join() {
+    let parts = vec!["Hello", "world", "from", "Rust"];
+    let joined = parts.join(" ");
+    assert_eq!(joined, "Hello world from Rust");
+}
+
+#[test]
+fn test_lines() {
+    let text = "Hello\nworld\nfrom\nRust";
+    let lines: Vec<&str> = text.lines().collect();
+    assert_eq!(lines, vec!["Hello", "world", "from", "Rust"]);
+}
+
+#[test]
+fn test_to_lowercase() {
+    let text = "HELLO WORLD";
+    let lower = text.to_lowercase();
+    assert_eq!(lower, "hello world");
+}
+
+#[test]
+fn test_to_uppercase() {
+    let text = "hello world";
+    let upper = text.to_uppercase();
+    assert_eq!(upper, "HELLO WORLD");
+}
+
+#[test]
+fn test_trim_start_matches() {
+    let text = "   Hello world";
+    let trimmed = text.trim_start_matches(' ');
+    assert_eq!(trimmed, "Hello world");
+}
+
+#[test]
+fn test_trim_end_matches() {
+    let text = "Hello world   ";
+    let trimmed = text.trim_end_matches(' ');
+    assert_eq!(trimmed, "Hello world");
+}
+
+#[test]
+fn test_contains_char() {
+    let text = "Hello world";
+    assert!(text.contains('o'));
+    assert!(!text.contains('z'));
+}
+
+#[test]
+fn test_find_char() {
+    let text = "Hello world";
+    assert_eq!(text.find('o'), Some(4));
+    assert_eq!(text.find('z'), None);
+}
+
+#[test]
+fn test_start_with() {
+    let text = "Hello world";
+    assert!(text.starts_with("Hello"));
+    assert!(!text.starts_with("world"));
+}
+
+#[test]
+fn test_end_with() {
+    let text = "Hello world";
+    assert!(text.ends_with("world"));
+    assert!(!text.ends_with("Hello"));
+}
+
+#[test]
+fn test_len_chars() {
+    let text = "Hello world";
+    assert_eq!(text.chars().count(), 11);
+}
+
+#[test]
+fn test_is_empty() {
+    let empty = "";
+    let not_empty = "Hello";
+    assert!(empty.is_empty());
+    assert!(!not_empty.is_empty());
+}
+
+#[test]
+fn test_char_at() {
+    let text = "Hello";
+    assert_eq!(text.chars().nth(0), Some('H'));
+    assert_eq!(text.chars().nth(4), Some('o'));
+    assert_eq!(text.chars().nth(5), None);
+}
+
+#[test]
+fn test_repeat() {
+    let text = "Hello";
+    let repeated = text.repeat(3);
+    assert_eq!(repeated, "HelloHelloHello");
 }

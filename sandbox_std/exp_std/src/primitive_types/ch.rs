@@ -9,7 +9,7 @@ fn test_match() {
 
     match c {
         'a'..='z' => println!("Это буква"),
-        _ => println!("Не в деапозоне"),
+        _ => println!("Не в диапазоне"),
     }
 
     let c = 'б';
@@ -172,12 +172,12 @@ fn test_match() {
     println!("{t}"); // Демо текст.
     println!();
 
-    // 3 максимальное число дробления
+    // 3 максимальное число деления
     for ele in text.splitn(3, |ch: char| ch.is_ascii_punctuation()) {
         println!("{ele}");
     }
 
-    // (split) countains
+    // (split) contains
     for c in ['h', 'l', 'z'] {
         if s.contains(&(c as u8)) {
             println!("'{c}' найден!");

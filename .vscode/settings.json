@@ -1,15 +1,11 @@
 {
-    "cSpell.words": [
-        "nums",
-        "WOMENS"
-    ],
-    "rust-analyzer.runnables.extraEnv": {
-        "RUST_LOG": "debug",
-        "RUST_BACKTRACE": 0
-    },
-    "rust-analyzer.runnables.extraTestBinaryArgs": [
-        "--show-output",
-        "--nocapture"
-    ],
-    "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.runnables.extraEnv": {
+    "RUST_LOG": "debug",
+    "RUST_BACKTRACE": 0,
+  },
+  "rust-analyzer.runnables.extraTestBinaryArgs": [
+    "--show-output",
+    "--nocapture",
+  ],
+  "rust-analyzer.procMacro.enable": true,
 }

@@ -6,7 +6,6 @@
 
 use std::borrow::Cow;
 
-//
 #[test]
 fn test() {
     let a = ['h', 'i'];
@@ -33,7 +32,7 @@ fn test() {
     assert_eq!(b, "hi!!");
     // assert_eq!(c, "hi!!");// panic
 
-    fn lower(s: &str) -> Cow<str> {
+    fn lower<'a>(s: &'a str) -> Cow<'a, str> {
         if s.chars().any(char::is_uppercase) {
             Cow::Owned(s.to_lowercase())
         } else {
@@ -43,7 +42,7 @@ fn test() {
     let a = "hi";
     let b = lower(a);
     assert_eq!(b, "hi");
-    assert_eq!(b.as_ptr(), a.as_ptr()); // Указатель на один и теже данные
+    assert_eq!(b.as_ptr(), a.as_ptr()); // Указатель на один и те же данные
     println!("a={a}; b={b}");
 
     let a = "Hi";
