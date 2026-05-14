@@ -53,7 +53,7 @@
 /// Недостаток этого метода, что он не отображает старшие нули.
 ///
 /// ```rust
-/// use exp_std::convert_to_array_bits::fmt_convert_v1;
+/// use exa_std::convert_to_array_bits::fmt_convert_v1;
 /// assert_eq!(fmt_convert_v1(1), vec![true]);
 /// assert_eq!(fmt_convert_v1(5), vec![true, false,true]);
 /// ```
@@ -68,7 +68,7 @@ where
 /// Старшие биты будут заполнены нулями, а размер берётся из `std::mem::size_of_val(&value) * 8`
 ///
 /// ```rust
-/// use exp_std::convert_to_array_bits::fmt_convert_v2;
+/// use exa_std::convert_to_array_bits::fmt_convert_v2;
 /// assert_eq!(fmt_convert_v2(u8::MAX), vec![true,true,true,true,true,true,true,true]);
 /// assert_eq!(fmt_convert_v2(1_u8), vec![false,false,false,false,false,false,false,true]);
 /// ```
@@ -89,7 +89,7 @@ where
 /// Недостаток этого метода, что он потерял возможность работать с другими типами.
 ///
 /// ```rust
-/// use exp_std::convert_to_array_bits::shift_convert_v1;
+/// use exa_std::convert_to_array_bits::shift_convert_v1;
 /// assert_eq!(shift_convert_v1(1_u8), vec![false,false,false,false,false,false,false,true]);
 /// assert_eq!(shift_convert_v1(u8::MAX), vec![true,true,true,true,true,true,true,true]);
 /// ```

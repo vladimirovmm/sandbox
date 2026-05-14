@@ -1,17 +1,10 @@
 [package]
-name = "exp_sort"
+name = "exa_dijkstras"
 edition.workspace = true
 license.workspace = true
 version.workspace = true
 
 [dependencies]
-
-[dev-dependencies]
-criterion.workspace = true
-
-[[bench]]
-name = "benchmark_sort"
-harness = false
 
 [lints]
 workspace = true

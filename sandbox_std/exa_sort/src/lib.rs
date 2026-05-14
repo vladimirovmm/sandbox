@@ -12,7 +12,7 @@ use std::fmt::Debug;
 /// # Примеры
 ///
 /// ```
-/// use exp_sort::bubble_sort;
+/// use exa_sort::bubble_sort;
 ///
 /// let mut arr = [2, 3, 1];
 /// bubble_sort(&mut arr);
@@ -20,7 +20,7 @@ use std::fmt::Debug;
 /// ```
 ///
 /// ```
-/// use exp_sort::bubble_sort;
+/// use exa_sort::bubble_sort;
 ///
 /// let mut arr = [5, 2, 8, 1, 9];
 /// bubble_sort(&mut arr);
@@ -28,7 +28,7 @@ use std::fmt::Debug;
 /// ```
 ///
 /// ```
-/// use exp_sort::bubble_sort;
+/// use exa_sort::bubble_sort;
 ///
 /// let mut arr = [10, 4, 7, 3, 1, 8, 2, 9, 5, 6, 15, 12, 18, 11, 14, 17, 13, 16, 19, 1];
 /// bubble_sort(&mut arr);
@@ -57,7 +57,7 @@ pub fn bubble_sort<T: Ord>(arr: &mut [T]) {
 /// # Примеры
 ///
 /// ```
-/// use exp_sort::selection_sort;
+/// use exa_sort::selection_sort;
 ///
 /// let mut arr = [2, 3, 1];
 /// selection_sort(&mut arr);
@@ -65,7 +65,7 @@ pub fn bubble_sort<T: Ord>(arr: &mut [T]) {
 /// ```
 ///
 /// ```
-/// use exp_sort::selection_sort;
+/// use exa_sort::selection_sort;
 ///
 /// let mut arr = [5, 2, 8, 1, 9];
 /// selection_sort(&mut arr);
@@ -73,7 +73,7 @@ pub fn bubble_sort<T: Ord>(arr: &mut [T]) {
 /// ```
 ///
 /// ```
-/// use exp_sort::selection_sort;
+/// use exa_sort::selection_sort;
 ///
 /// let mut arr = [10, 4, 7, 3, 1, 8, 2, 9, 5, 6, 15, 12, 18, 11, 14, 17, 13, 16, 19, 1];
 /// selection_sort(&mut arr);
@@ -106,7 +106,7 @@ pub fn selection_sort<T: Ord>(arr: &mut [T]) {
 /// # Примеры
 ///
 /// ```
-/// use exp_sort::insertion_sort;
+/// use exa_sort::insertion_sort;
 ///
 /// let mut arr = [2, 3, 1];
 /// insertion_sort(&mut arr);
@@ -114,7 +114,7 @@ pub fn selection_sort<T: Ord>(arr: &mut [T]) {
 /// ```
 ///
 /// ```
-/// use exp_sort::insertion_sort;
+/// use exa_sort::insertion_sort;
 ///
 /// let mut arr = [5, 2, 8, 1, 9];
 /// insertion_sort(&mut arr);
@@ -122,7 +122,7 @@ pub fn selection_sort<T: Ord>(arr: &mut [T]) {
 /// ```
 ///
 /// ```
-/// use exp_sort::insertion_sort;
+/// use exa_sort::insertion_sort;
 ///
 /// let mut arr = [10, 4, 7, 3, 1, 8, 2, 9, 5, 6, 15, 12, 18, 11, 14, 17, 13, 16, 19, 1];
 /// insertion_sort(&mut arr);
@@ -155,7 +155,7 @@ pub fn insertion_sort<T: Ord>(arr: &mut [T]) {
 /// # Примеры
 ///
 /// ```
-/// use exp_sort::quick_sort;
+/// use exa_sort::quick_sort;
 ///
 /// let mut arr = [2, 3, 1];
 /// quick_sort(&mut arr);
@@ -163,7 +163,7 @@ pub fn insertion_sort<T: Ord>(arr: &mut [T]) {
 /// ```
 ///
 /// ```
-/// use exp_sort::quick_sort;
+/// use exa_sort::quick_sort;
 ///
 /// let mut arr = [5, 2, 8, 1, 9];
 /// quick_sort(&mut arr);
@@ -171,7 +171,7 @@ pub fn insertion_sort<T: Ord>(arr: &mut [T]) {
 /// ```
 ///
 /// ```
-/// use exp_sort::quick_sort;
+/// use exa_sort::quick_sort;
 ///
 /// let mut arr = [10, 4, 7, 3, 1, 8, 2, 9, 5, 6, 15, 12, 18, 11, 14, 17, 13, 16, 19, 1];
 /// quick_sort(&mut arr);
@@ -220,7 +220,7 @@ fn quick_sort_partition<T: Ord + Copy + Debug>(arr: &mut [T], low: usize, high: 
 /// # Примеры
 ///
 /// ```
-/// use exp_sort::merge_sort;
+/// use exa_sort::merge_sort;
 ///
 /// let mut arr = [2, 3, 1];
 /// merge_sort(&mut arr);
@@ -228,7 +228,7 @@ fn quick_sort_partition<T: Ord + Copy + Debug>(arr: &mut [T], low: usize, high: 
 /// ```
 ///
 /// ```
-/// use exp_sort::merge_sort;
+/// use exa_sort::merge_sort;
 ///
 /// let mut arr = [5, 2, 8, 1, 9];
 /// merge_sort(&mut arr);
@@ -236,7 +236,7 @@ fn quick_sort_partition<T: Ord + Copy + Debug>(arr: &mut [T], low: usize, high: 
 /// ```
 ///
 /// ```
-/// use exp_sort::merge_sort;
+/// use exa_sort::merge_sort;
 ///
 /// let mut arr = [10, 4, 7, 3, 1, 8, 2, 9, 5, 6, 15, 12, 18, 11, 14, 17, 13, 16, 19, 1];
 /// merge_sort(&mut arr);
@@ -292,7 +292,7 @@ pub fn merge_sort<T: Ord + Copy + Debug>(arr: &mut [T]) {
 /// # Примеры
 ///
 /// ```
-/// use exp_sort::heap_sort;
+/// use exa_sort::heap_sort;
 ///
 /// let mut arr = [2, 3, 1];
 /// heap_sort(&mut arr);
@@ -300,7 +300,7 @@ pub fn merge_sort<T: Ord + Copy + Debug>(arr: &mut [T]) {
 /// ```
 ///
 /// ```
-/// use exp_sort::heap_sort;
+/// use exa_sort::heap_sort;
 ///
 /// let mut arr = [5, 2, 8, 1, 9];
 /// heap_sort(&mut arr);
@@ -308,7 +308,7 @@ pub fn merge_sort<T: Ord + Copy + Debug>(arr: &mut [T]) {
 /// ```
 ///
 /// ```
-/// use exp_sort::heap_sort;
+/// use exa_sort::heap_sort;
 ///
 /// let mut arr = [10, 4, 7, 3, 1, 8, 2, 9, 5, 6, 15, 12, 18, 11, 14, 17, 13, 16, 19, 1];
 /// heap_sort(&mut arr);

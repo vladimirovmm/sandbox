@@ -1,5 +1,5 @@
 [package]
-name = "exp_std"
+name = "exa_std"
 edition.workspace = true
 license.workspace = true
 version.workspace = true

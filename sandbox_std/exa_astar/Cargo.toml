@@ -1,5 +1,5 @@
 [package]
-name = "exp_search"
+name = "exa_astar"
 edition.workspace = true
 license.workspace = true
 version.workspace = true

@@ -1,7 +1,7 @@
 use std::hint::black_box;
 
 use criterion::{Criterion, criterion_group, criterion_main};
-use exp_sort::{bubble_sort, heap_sort, insertion_sort, merge_sort, quick_sort, selection_sort};
+use exa_sort::{bubble_sort, heap_sort, insertion_sort, merge_sort, quick_sort, selection_sort};
 
 /// Малый массив для тестирования сортировки
 const SMALL_ARR: [i32; 5] = [5, 2, 8, 1, 9];

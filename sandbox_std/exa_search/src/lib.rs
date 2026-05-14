@@ -14,7 +14,7 @@
 /// # Примеры
 ///
 /// ```
-/// use exp_search::linear_search;
+/// use exa_search::linear_search;
 ///
 /// let arr = [1, 2, 3, 4, 5];
 /// let target = 3;
@@ -22,7 +22,7 @@
 /// ```
 ///
 /// ```
-/// use exp_search::linear_search;
+/// use exa_search::linear_search;
 ///
 /// let arr = ["a", "b", "c"];
 /// let target = "d";
@@ -30,7 +30,7 @@
 /// ```
 ///
 /// ```
-/// use exp_search::linear_search;
+/// use exa_search::linear_search;
 ///
 /// let arr = [10, 20, 30];
 /// let target = 10;
@@ -59,7 +59,7 @@ pub fn linear_search<T: PartialEq>(arr: &[T], target: &T) -> Option<usize> {
 ///  * Требование: массив должен быть отсортирован.
 ///
 /// ```
-/// use exp_search::binary_search;
+/// use exa_search::binary_search;
 ///
 /// let arr = [1, 2, 3, 4, 5];
 /// let target = 3;
@@ -69,7 +69,7 @@ pub fn linear_search<T: PartialEq>(arr: &[T], target: &T) -> Option<usize> {
 /// Не сработает с неотсортированным массивом
 ///
 /// ```
-/// use exp_search::binary_search;
+/// use exa_search::binary_search;
 ///
 /// let arr = [3, 5, 1, 2, 4];
 /// let target = 3;

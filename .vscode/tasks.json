@@ -37,9 +37,9 @@
       },
     },
     {
-      "label": "exp_search: bench",
+      "label": "exa_astar: bench",
       "type": "shell",
-      "command": "cargo bench -p exp_search",
+      "command": "cargo bench -p exa_astar",
       "group": {
         "kind": "build",
         "isDefault": true,
