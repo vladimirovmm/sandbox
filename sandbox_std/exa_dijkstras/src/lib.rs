@@ -55,7 +55,7 @@ pub fn dijkstra(cities: &CityMap, start_idx: usize, end: usize) -> Vec<usize> {
             let new_dist = heap_weight + weight;
             println!(
                 "{}->{}: {new_dist}",
-                &cities[heap_city].0, &cities[city_index].0
+                cities[heap_city].0, cities[city_index].0
             );
             // Обновляем расстояние, если найден более короткий путь до этого города
             if new_dist < dist[city_index] {

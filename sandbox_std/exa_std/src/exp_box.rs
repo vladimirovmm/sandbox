@@ -377,7 +377,7 @@ fn group_quotes(
     })
 }
 
-/// Сгруппировать содержимой в фигурных скобках
+/// Группирование содержимого фигурных скобок
 /// Валидация содержимого происходит позже
 fn group_object(
     mut stream_markup: impl Iterator<Item = Result<Markup, MarkupError>>,
@@ -522,7 +522,7 @@ fn processing_mut(item: &mut Markup) -> Result<(), MarkupError> {
     validate_unused_chars(item)
 }
 
-/// Преобразовываем не используемый диапазоны символов в разметку
+/// Группирование не используемых диапазонов символов в разметку
 fn converted_range_chars_to_markup(
     item: Result<Markup, MarkupError>,
 ) -> Result<Markup, MarkupError> {
@@ -540,7 +540,7 @@ fn converted_range_chars_to_markup(
     })
 }
 
-/// Пост обработка массива. Валидация и удаление запятых
+/// Постобработка массива. Валидация и удаление запятых
 fn processing_arrays_mut(item: &mut Markup) -> Result<(), MarkupError> {
     let Markup {
         optional: MarkupOptions::Array { finished, nested },
@@ -565,7 +565,7 @@ fn processing_arrays_mut(item: &mut Markup) -> Result<(), MarkupError> {
     Ok(())
 }
 
-/// Пост обработка объекта. Валидация и удаление запятых
+/// Постобработка объекта. Валидация и удаление запятых
 fn processing_object_mut(item: &mut Markup) -> Result<(), MarkupError> {
     let Markup {
         optional: MarkupOptions::Object { finished, nested },
