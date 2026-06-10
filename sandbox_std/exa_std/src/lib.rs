@@ -11,5 +11,6 @@ pub mod exp_cow;
 pub mod exp_mutex;
 pub mod exp_rc;
 pub mod exp_refcell;
+pub mod exp_rwlock;
 
 pub mod primitive_types;
